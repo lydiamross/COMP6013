@@ -16,6 +16,10 @@ app.get('/', handlers.home);
 
 app.get('/about', handlers.about);
 
+app.get('/topic', handlers.topic);
+
+app.get('/account', handlers.account);
+
 app.use(handlers.notFound);
 
 app.use(handlers.serverError);

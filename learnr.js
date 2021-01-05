@@ -10,7 +10,7 @@ app.engine('handlebars', expressHandlebars({ defaultLayout: 'main' }));
 
 app.set('view engine', 'handlebars');
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(`${__dirname}/public`));
 
 app.get('/', handlers.home);
 
@@ -21,5 +21,5 @@ app.use(handlers.notFound);
 app.use(handlers.serverError);
 
 app.listen(port, () => {
-    console.log(`Server started on port ${port}, press Ctrl-C to terminate...`);
+  console.log(`Server started on port ${port}, press Ctrl-C to terminate...`);
 });

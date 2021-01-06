@@ -1,7 +1,34 @@
 version: 2.1
 orbs:
   node: circleci/node@4.0.0
+
+jobs:
+  run_tests:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - run: touch .env
+      - run:
+          name: Installing Dependencies
+          command: npm ci
+      - run:
+          name: Run tests
+          command: npm test
+  run_lint:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - checkout
+      - run:
+          name: Installing Dependencies
+          command: npm ci
+      - run:
+          name: Lint code
+          command: npm run lint
+
 workflows:
   app-tests:
     jobs:
-      - node/test
+      - run_tests
+      - run_lint

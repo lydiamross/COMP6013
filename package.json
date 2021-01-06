@@ -20,8 +20,10 @@
     "portfinder": "^1.0.28"
   },
   "scripts": {
-    "test": "jest",
-    "lint": "eslint learnr.js ../COMP6013"
+    "test": "jest lib",
+    "test-all": "jest",
+    "lint": "eslint learnr.js lib",
+    "lint-all": "eslint learnr.js ../COMP6013"
   },
   "repository": {
     "type": "git",
@@ -34,8 +36,8 @@
   "homepage": "https://github.com/lydiamross/COMP6013#readme",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm test"
+      "pre-commit": "npm run lint-all",
+      "pre-push": "npm run test-all"
     }
   }
 }

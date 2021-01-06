@@ -15,11 +15,15 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^4.3.6",
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "playwright": "^1.7.1",
+    "portfinder": "^1.0.28"
   },
   "scripts": {
-    "test": "jest",
-    "lint": "eslint learnr.js lib"
+    "test": "jest lib",
+    "test-all": "jest",
+    "lint": "eslint learnr.js lib",
+    "lint-all": "eslint learnr.js ../COMP6013"
   },
   "repository": {
     "type": "git",
@@ -32,8 +36,8 @@
   "homepage": "https://github.com/lydiamross/COMP6013#readme",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm test"
+      "pre-commit": "npm run lint-all",
+      "pre-push": "npm run test-all"
     }
   }
 }

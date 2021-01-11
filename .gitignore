@@ -1,4 +1,6 @@
 .env
 .DS_Store
+.credentials.development.json
+.credentials.test.json
 coverage
 node_modules

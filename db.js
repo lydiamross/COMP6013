@@ -19,5 +19,22 @@ db.on('error', (err) => {
 db.once('open', () => console.log('MongoDB connection running'));
 
 module.exports = {
-  getCards: async (options = {}) => options
+  getCards: async (options = {}) => {
+    const cards = [
+      {
+        id: 'ccf5363ec9acf5cc76db6eba',
+        createdDate: '2021-01-12T12:00:00.000Z',
+        type: 'simple',
+        topicId: '07890edd92ee04e23ba383c5',
+        question: 'Define idempotence',
+        answer: 'An idempotent operation is an operation, action or request that can be applied multiple times without changing the result',
+        previousStatus: 'neutral',
+        available: true,
+      },
+    ];
+    if (options.available !== undefined) {
+      return cards.filter(({ available }) => available === options.available);
+    }
+    return cards;
+  }
 };

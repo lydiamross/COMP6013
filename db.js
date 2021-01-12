@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
 const { credentials } = require('./config');
 
-const { connectionString } = credentials.mongo;
-
-if (!connectionString) {
+if (!credentials.mongo) {
   console.error('MongoDB connection string missing');
   process.exit(1);
 }
 
-mongoose.connect(connectionString);
+mongoose.connect(credentials.mongo);
 
 const db = mongoose.connection;
 

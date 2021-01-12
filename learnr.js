@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const handlers = require('./lib/handlers');
 const { credentials } = require('./config');
+require('./db');
 
 const app = express();
 const port = process.env.PORT || 3000;

@@ -36,5 +36,17 @@ module.exports = {
       return cards.filter(({ available }) => available === options.available);
     }
     return cards;
+  },
+  getTopics: async () => {
+    const topics = [
+      {
+        id: '07890edd92ee04e23ba383c5',
+        createdDate: '2021-01-12T12:00:00.000Z',
+        name: 'Definitions',
+        description: 'Computing terms',
+        cards: ['ccf5363ec9acf5cc76db6eba']
+      },
+    ];
+    return topics;
   }
 };

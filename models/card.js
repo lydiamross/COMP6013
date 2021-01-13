@@ -1,6 +1,5 @@
-import { CARDTYPES, STATUSTYPES } from './constants';
-
 const mongoose = require('mongoose');
+const { CARDTYPES, STATUSTYPES } = require('./constants');
 
 const cardSchema = mongoose.Schema({
   id: mongoose.Schema.Types.ObjectId, // 24-character hexadecimal string
@@ -12,7 +11,6 @@ const cardSchema = mongoose.Schema({
   answer: mongoose.Schema.Types.String,
   previousStatus: { type: mongoose.Schema.Types.String, enum: STATUSTYPES },
   previousAnswerDate: mongoose.Schema.Types.Date,
-  available: mongoose.Schema.Types.Boolean // TODO: Remove
 });
 
 const Card = mongoose.model('Card', cardSchema);

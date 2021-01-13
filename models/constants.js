@@ -1,4 +1,4 @@
-export const CARDTYPES = [
+exports.CARDTYPES = [
   'true-false',
   'choice',
   'fill-in',
@@ -7,7 +7,7 @@ export const CARDTYPES = [
   'simple'
 ];
 
-export const STATUSTYPES = [
+exports.STATUSTYPES = [
   'confident',
   'neutral',
   'unsure'

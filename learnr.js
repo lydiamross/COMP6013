@@ -28,7 +28,7 @@ app.get('/', handlers.home);
 
 app.get('/about', handlers.about);
 
-app.get('/topic', handlers.topic);
+app.get('/topic', handlers.listTopics);
 
 app.get('/account', handlers.account);
 

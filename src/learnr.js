@@ -3,7 +3,7 @@ const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
-const { credentials } = require('./config');
+const { credentials } = require('../config');
 const addRoutes = require('./routes');
 require('./db');
 
@@ -11,9 +11,13 @@ const app = express();
 addRoutes(app);
 const port = process.env.PORT || 3000;
 
-app.engine('handlebars', expressHandlebars({ defaultLayout: 'main' }));
+app.engine('handlebars', expressHandlebars({
+  defaultLayout: 'main',
+  layoutsDir: './src/views/layouts',
+}));
 
 app.set('view engine', 'handlebars');
+app.set('views', './src/views');
 
 app.use(cookieParser(credentials.cookieSecret));
 

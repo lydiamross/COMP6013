@@ -1,7 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 const mongoose = require('mongoose');
-const { credentials } = require('./config');
+const { credentials } = require('../config');
 const Card = require('./models/card');
 const Topic = require('./models/topic');
 

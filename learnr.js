@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 const handlers = require('./lib/handlers');
 const { credentials } = require('./config');
+require('./db');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -27,7 +28,9 @@ app.get('/', handlers.home);
 
 app.get('/about', handlers.about);
 
-app.get('/topic', handlers.topic);
+app.get('/topic', handlers.listTopics);
+
+app.get('/card', handlers.listCards);
 
 app.get('/account', handlers.account);
 

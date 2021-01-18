@@ -3,7 +3,6 @@ const express = require('express');
 const expressHandlebars = require('express-handlebars');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
-const { credentials } = require('../config');
 const addRoutes = require('./routes');
 require('./db');
 
@@ -19,12 +18,12 @@ app.engine('handlebars', expressHandlebars({
 app.set('view engine', 'handlebars');
 app.set('views', './src/views');
 
-app.use(cookieParser(credentials.cookieSecret));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 app.use(expressSession({
   resave: false,
   saveUninitialized: false,
-  secret: credentials.cookieSecret,
+  secret: process.env.COOKIE_SECRET,
 }));
 
 if (require.main === module) {

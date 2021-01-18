@@ -1,16 +1,15 @@
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 const mongoose = require('mongoose');
-const { credentials } = require('../config');
 const Card = require('./models/card');
 const Topic = require('./models/topic');
 
-if (!credentials.mongo) {
+if (!process.env.MONGO_URL) {
   console.error('MongoDB connection string missing');
   process.exit(1);
 }
 
-mongoose.connect(credentials.mongo);
+mongoose.connect(process.env.MONGO_URL);
 
 const db = mongoose.connection;
 

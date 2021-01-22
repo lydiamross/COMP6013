@@ -27,8 +27,8 @@
   "scripts": {
     "test": "jest lib",
     "test-all": "jest",
-    "lint": "eslint learnr.js lib",
-    "lint-all": "eslint learnr.js ../COMP6013"
+    "lint": "eslint src/learnr.js lib",
+    "lint-all": "eslint src/learnr.js ../COMP6013"
   },
   "repository": {
     "type": "git",

@@ -24,7 +24,7 @@ Card.find((err, cards) => {
   if (cards.length) return 0;
 
   new Card({
-    id: 'ccf5363ec9acf5cc76db6eba',
+    _id: 'ccf5363ec9acf5cc76db6eba',
     createdDate: '2021-01-12T12:01:00.000Z',
     type: 'simple',
     topicId: '07890edd92ee04e23ba383c5',
@@ -34,7 +34,7 @@ Card.find((err, cards) => {
   }).save();
 
   new Card({
-    id: 'e02425a5cb834bf041f721e8',
+    _id: 'e02425a5cb834bf041f721e8',
     createdDate: '2021-01-12T12:02:00.000Z',
     type: 'simple',
     topicId: '07890edd92ee04e23ba383c5',
@@ -49,7 +49,7 @@ Topic.find((err, topics) => {
   if (topics.length) return 0;
 
   new Topic({
-    id: '07890edd92ee04e23ba383c5',
+    _id: '07890edd92ee04e23ba383c5',
     createdDate: '2021-01-12T12:00:00.000Z',
     name: 'Definitions',
     description: 'Computing terms',
@@ -60,4 +60,12 @@ Topic.find((err, topics) => {
 module.exports = {
   getCards: async (options = {}) => Card.find(options),
   getTopics: async (options = {}) => Topic.find(options),
+  getCardById: async (id) => {
+    const card = Card.findOne({ _id: id });
+    return card;
+  },
+  getTopicById: async (id) => {
+    const card = Topic.findOne({ _id: id });
+    return card;
+  },
 };

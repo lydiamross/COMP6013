@@ -12,11 +12,11 @@ const port = process.env.PORT || 3000;
 
 app.engine('handlebars', expressHandlebars({
   defaultLayout: 'main',
-  layoutsDir: './src/views/layouts',
+  layoutsDir: './server/src/views/layouts',
 }));
 
 app.set('view engine', 'handlebars');
-app.set('views', './src/views');
+app.set('views', './server/src/views');
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 

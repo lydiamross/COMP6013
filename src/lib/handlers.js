@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const db = require('../db');
 
 exports.home = (req, res) => res.render('home');
@@ -8,7 +9,7 @@ exports.listTopics = async (req, res) => {
   const topics = await db.getTopics();
   const context = {
     topics: topics.map((topic) => ({
-      id: topic.id,
+      _id: topic.id,
       createdDate: topic.createdDate,
       name: topic.name,
       description: topic.description,
@@ -22,7 +23,7 @@ exports.listCards = async (req, res) => {
   const cards = await db.getCards();
   const context = {
     cards: cards.map((card) => ({
-      id: card.id,
+      _id: card._id,
       createdDate: card.createdDate,
       updatedDate: card.updatedDate,
       type: card.type,
@@ -37,6 +38,26 @@ exports.listCards = async (req, res) => {
 };
 
 exports.account = (req, res) => res.render('account');
+
+exports.getCardsApi = async (req, res) => {
+  const cards = await db.getCards();
+  res.json(cards);
+};
+
+exports.getTopicsApi = async (req, res) => {
+  const topics = await db.getTopics();
+  res.json(topics);
+};
+
+exports.getCardByIdApi = async (req, res) => {
+  const card = await db.getCardById(req.params._id);
+  res.json(card);
+};
+
+exports.getTopicByIdApi = async (req, res) => {
+  const topic = await db.getTopicById(req.params.id);
+  res.json(topic);
+};
 
 exports.notFound = (req, res) => res.render('404');
 

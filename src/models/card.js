@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-const { CARDTYPES, STATUSTYPES } = require('./constants');
+const { CARDTYPES, STATUSTYPES } = require('../constants');
 
 const cardSchema = mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId, // 24-character hexadecimal string
+  _id: mongoose.Schema.Types.ObjectId, // 24-character hexadecimal string
   createdDate: { type: mongoose.Schema.Types.Date, default: Date.now },
   updatedDate: mongoose.Schema.Types.Date,
   type: { type: mongoose.Schema.Types.String, enum: CARDTYPES },

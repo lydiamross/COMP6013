@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { CARDTYPES, STATUSTYPES } = require('./constants');
+const { CARDTYPES, STATUSTYPES } = require('../constants');
 
 const cardSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId, // 24-character hexadecimal string

@@ -25,9 +25,9 @@
     "portfinder": "^1.0.28"
   },
   "scripts": {
-    "test": "jest lib",
+    "test": "jest src/lib",
     "test-all": "jest",
-    "lint": "eslint src/learnr.js lib",
+    "lint": "eslint src/learnr.js src/lib",
     "lint-all": "eslint src/learnr.js ../COMP6013"
   },
   "repository": {

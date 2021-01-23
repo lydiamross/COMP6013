@@ -1,10 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const db = require('../db');
 
-exports.home = (req, res) => res.render('home');
-
-exports.about = (req, res) => res.render('about');
-
+/* No longer needed, but functionality will be reused
 exports.listTopics = async (req, res) => {
   const topics = await db.getTopics();
   const context = {
@@ -36,8 +33,7 @@ exports.listCards = async (req, res) => {
   };
   res.render('card', context);
 };
-
-exports.account = (req, res) => res.render('account');
+*/
 
 exports.getCardsApi = async (req, res) => {
   const cards = await db.getCards();

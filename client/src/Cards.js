@@ -1,20 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+
+function Card({ card }) {
+  return (
+    <div key={card._id}>
+      <h3>{card.question}</h3>
+      <p>{card.answer}</p>
+    </div> 
+  )
+};
 
 function Cards() {
   const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/cards')
+      .then(res => res.json())
+      .then(setCards);
+  }, []);
+
   return (
-    <div>
+    <>
       <h2>Cards</h2>
       <div className="cards">
         {cards.map(card =>
-          <div key={card._id}>
-            <h3>{card.question}</h3>
-            <p>{card.answer}</p>
-          </div>
+          <Card key={card._id} card={card} />
         )}
       </div>
-    </div>
+    </>
   )
 };
 

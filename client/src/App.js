@@ -4,14 +4,14 @@ import {
   Route,
   Link
 } from 'react-router-dom';
-import logo from './logo.svg';
+import logo from './logo.png';
 import './App.css';
 import Cards from './Cards.js';
 
 function Home() {
   return (
     <div>
-      <h2>Welcome to Meadowlark Travel</h2>
+      <h2>Learnr</h2>
       <p>Check out our <Link to="/about">About</Link> page</p>
     </div>
   );
@@ -35,8 +35,8 @@ function App() {
     <Router>
       <div className="container">
         <header>
-          <h1>Meadowlark Travel</h1>
-          <Link to="/"><img src={logo} alt="Logo"/></Link>
+          <h1>Learnr</h1>
+          <Link to="/"><img src={logo} alt="Logo" width="50px"/></Link>
         </header>
         <Switch>
           <Route path="/" exact component={Home} />

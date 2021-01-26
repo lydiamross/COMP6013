@@ -11,26 +11,28 @@ import { Home } from './components/Home';
 import { About } from './components/About';
 import { NotFound } from './components/NotFound';
 import { Menu } from './components/Menu';
-import { Logo } from './components/styled/styled';
+import { AppContainer, Logo, Header, Section } from './styled';
 
 function App() {
   return (
-    <Router>
-      <div className="container">
-        <header>
-          <Link to="/"><Logo src={logo} alt="Logo"/></Link>
+    <AppContainer>
+      <Router>
+        <Header>
+          <Link to="/"><Logo src={logo} alt="Logo" /></Link>
           <h1>Learnr</h1>
-          <Menu />
-        </header>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/about" exact component={About} />
-          <Route path="/cards" exact component={Cards} />
-          <Route path="/topics" exact component={Topics} />
-          <Route component={NotFound} />
-        </Switch>
-      </div>
-    </Router>
+        </Header>
+        <Menu />
+        <Section>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/about" exact component={About} />
+            <Route path="/cards" exact component={Cards} />
+            <Route path="/topics" exact component={Topics} />
+            <Route component={NotFound} />
+          </Switch>
+        </Section>
+      </Router>
+    </AppContainer>
   );
 };
 

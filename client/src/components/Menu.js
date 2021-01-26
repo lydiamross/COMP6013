@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import React, { useState } from 'react';
+import { DropdownMenu, MenuContainer } from '../styled';
 
 export const Menu = () => {
   const [isMenuDisplayed, setMenuDisplay] = useState(true);
@@ -11,20 +12,18 @@ export const Menu = () => {
   }
 
   return (
-    <nav>
-      <div>
-        <FontAwesomeIcon
-          onClick={onToggleChange}
-          icon={faBars} />
-      </div>
+    <MenuContainer>
+      <FontAwesomeIcon
+        onClick={onToggleChange}
+        icon={faBars} />
       {isMenuDisplayed &&
-        <ul>
+        <DropdownMenu>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/cards">Cards</Link></li>
           <li><Link to="/topics">Topics</Link></li>
-        </ul>
+        </DropdownMenu>
       }
-    </nav >
+    </MenuContainer >
   );
 };

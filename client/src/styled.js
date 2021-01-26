@@ -15,13 +15,13 @@ export const AppContainer = styled.div`
 
 export const DropdownMenu = styled.ul`
   list-style: none;
-`
+`;
 
 export const MenuContainer = styled.nav`
   text-align: left;
   grid-row: 1;
   grid-column: 1;
-`
+`;
 
 export const Header = styled.header`
   grid-row: 1;

@@ -15,7 +15,8 @@ export const Menu = () => {
     <MenuContainer>
       <FontAwesomeIcon
         onClick={onToggleChange}
-        icon={faBars} />
+        icon={faBars}
+        size="2x" />
       {isMenuDisplayed &&
         <DropdownMenu>
           <li><Link to="/">Home</Link></li>

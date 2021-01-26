@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { DropdownMenu, MenuContainer } from '../styled';
 
 export const Menu = () => {
-  const [isMenuDisplayed, setMenuDisplay] = useState(true);
+  const [isMenuDisplayed, setMenuDisplay] = useState(false);
 
   function onToggleChange() {
     setMenuDisplay(!isMenuDisplayed);

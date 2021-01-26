@@ -25,7 +25,7 @@
   "scripts": {
     "test": "jest src/lib",
     "test-all": "jest",
-    "lint": "eslint src/learnr.js src/lib",
+    "lint-server": "eslint src/learnr.js src/lib",
     "lint-all": "eslint src/learnr.js ../COMP6013"
   },
   "repository": {
@@ -39,7 +39,8 @@
   "homepage": "https://github.com/lydiamross/COMP6013#readme",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint-all",
+      "pre-commit": "npm run lint-client",
+      "pre-commit": "npm run lint-server",
       "pre-push": "npm run test-all"
     }
   }

@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@4.0.0
 
 jobs:
-  run_ui_tests:
+  run_tests:
     docker:
       - image: circleci/node:14
     steps:
@@ -15,54 +15,19 @@ jobs:
       - run:
           name: Run tests
           command: npm test
-  run_server_tests:
+  run_lint:
     docker:
       - image: circleci/node:14
     steps:
       - checkout
-      - run:
-          name: Change directory
-          command: cd server
-      - run: touch .env
-      - run:
-          name: Installing Dependencies
-          command: npm i
-      - run:
-          name: Run tests
-          command: npm test
-  run_ui_lint:
-    docker:
-      - image: circleci/node:14
-    steps:
-      - checkout
-      - run:
-          name: Change directory
-          command: cd client
       - run:
           name: Installing Dependencies
           command: npm i
       - run:
           name: Lint code
-          command: npm run lint-client
-  run_server_lint:
-    docker:
-      - image: circleci/node:14
-    steps:
-      - checkout
-      - run:
-          name: Change directory
-          command: cd server
-      - run:
-          name: Installing Dependencies
-          command: npm i
-      - run:
-          name: Lint code
-          command: npm run lint-server
-
+          command: npm run lint
 workflows:
   app-tests:
     jobs:
-      # - run_ui_tests
-      # - run_server_tests
-      - run_ui_lint
-      - run_server_lint
+      # - run_tests
+      - run_lint

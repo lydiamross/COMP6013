@@ -1,0 +1,16 @@
+{
+  "name": "comp6013",
+  "version": "0.1.0",
+  "devDependencies": {
+    "eslint": "^7.17.0"
+  },
+  "scripts": {
+    "lint": "eslint"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  }
+}

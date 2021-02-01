@@ -68,4 +68,46 @@ module.exports = {
     const card = Topic.findOne({ _id: id });
     return card;
   },
+  putCard: async card => {
+    if (!mongoose.isValidObjectId(card._id) || card._id === undefined) {
+      card._id = new mongoose.mongo.ObjectId();
+    }
+    return new Card(card).save()
+  },
+  putTopic: async topic => {
+    if (!mongoose.isValidObjectId(topic._id) || topic._id === undefined) {
+      topic._id = new mongoose.mongo.ObjectId();
+    }
+    return new Topic(topic).save()
+  },
+  postTopics: async topics => {
+    if (Array.isArray(topics)) {
+      topics.forEach(topic => {
+        if (!mongoose.isValidObjectId(topic._id) || topic._id === undefined) {
+          topic._id = new mongoose.mongo.ObjectId();
+        };
+        return new Topic(topic).save()
+      })
+    } else {
+      if (!mongoose.isValidObjectId(topic._id) || topic._id === undefined) {
+        topic._id = new mongoose.mongo.ObjectId();
+      }
+      return new Topic(topic).save()
+    }
+  },
+  postCards: async cards => {
+    if (Array.isArray(cards)) {
+      cards.forEach(card => {
+        if (!mongoose.isValidObjectId(card._id) || card._id === undefined) {
+          card._id = new mongoose.mongo.ObjectId();
+        };
+        return new Card(card).save()
+      })
+    } else {
+      if (!mongoose.isValidObjectId(cards._id) || cards._id === undefined) {
+        cards._id = new mongoose.mongo.ObjectId();
+      }
+      return new Card(cards).save()
+    }
+  }
 };

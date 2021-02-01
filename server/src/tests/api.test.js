@@ -3,7 +3,7 @@ const nodeFetch = require('node-fetch');
 
 const fetch = async (method, path, body) => {
   const response = await nodeFetch(
-    `${process.env.BASE_URL}:${process.env.PORT}${path}`,
+    `${process.env.BASE_URL}:${process.env.API_PORT}${path}`,
     {
       method,
       body: typeof body === 'string' ? body : JSON.stringify(body),
@@ -16,7 +16,7 @@ const fetch = async (method, path, body) => {
   return response.json();
 };
 
-describe('API tests', () => {
+describe('API tests on GET method', () => {
   test('GET /api/cards', async () => {
     const cards = await fetch('get', '/api/cards');
     expect(cards.length).not.toBe(0);
@@ -25,11 +25,11 @@ describe('API tests', () => {
     expect(typeof firstCard.type).toBe('string');
   });
 
-  test('GET /api/card/:_id', async () => {
+  test('GET /api/cards/:_id', async () => {
     const cards = await fetch('get', '/api/cards');
     expect(cards.length).not.toBe(0);
     const firstCard = cards[0];
-    const card = await fetch('get', `/api/card/${firstCard._id}`);
+    const card = await fetch('get', `/api/cards/${firstCard._id}`);
     expect(card.question).toBe(firstCard.question);
   });
 
@@ -41,11 +41,75 @@ describe('API tests', () => {
     expect(typeof firstTopic.cards).toBe('array');
   });
 
-  test('GET /api/topic/:_id', async () => {
-    const topics = await fetch('get', '/api/cards');
+  test('GET /api/topics/:_id', async () => {
+    const topics = await fetch('get', '/api/topics');
     expect(topics.length).not.toBe(0);
     const firstTopic = topics[0];
-    const topic = await fetch('get', `/api/topic/${firstTopic._id}`);
+    const topic = await fetch('get', `/api/topics/${firstTopic._id}`);
     expect(topic.name).toBe(firstTopic.name);
+  });
+});
+
+describe('API tests on POST method', () => {
+  test('POST /api/cards', async () => {
+    const sampleCardBody = [{
+      "_id": "e0dbdd80d092359d6c553cba",
+      "createdDate": "2021-02-01T12:01:00.000Z",
+      "type": "simple",
+      "topicId": "e964314a0d72beb0b1e37aea",
+      "question": "Example test question",
+      "answer": "Example test answer",
+    }];
+    const postResponse = await fetch('post', '/api/cards', sampleCardBody);
+    const card = await fetch('get', '/api/cards/e0dbdd80d092359d6c553cba');
+
+    expect(postResponse._id).toEqual(card._id);
+    expect(postResponse.question).toEqual(card.question);
+  });
+
+  test('POST /api/topics', async () => {
+    const sampleCardBody = [{
+      "_id": "aeb2ba54d1c19295fbce87ed",
+      "name": 'Example test name',
+      "description": 'Example test description',
+      "cards": ['e0dbdd80d092359d6c553cba']
+    }];
+    const postResponse = await fetch('post', '/api/topics', sampleCardBody);
+    const topic = await fetch('get', '/api/topics/aeb2ba54d1c19295fbce87ed');
+
+    expect(postResponse._id).toEqual(topic._id);
+    expect(postResponse.name).toEqual(topic.name);
+    expect(typeof postResponse.cards).toBe('array');
+  });
+});
+
+describe('API tests on PUT method', () => {
+  test('PUT /api/cards', async () => {
+    const sampleCardBody = {
+      "_id": "cb97fbe70eab4ef2694ec5ff",
+      "topicId": "e964314a0d72beb0b1e37aea",
+      "question": "Example test question",
+      "answer": "Example test answer",
+    };
+    const putResponse = await fetch('put', '/api/cards', sampleCardBody);
+    const card = await fetch('get', '/api/cards/cb97fbe70eab4ef2694ec5ff');
+
+    expect(putResponse._id).toEqual(card._id);
+    expect(putResponse.question).toEqual(card.question);
+  });
+
+  test('PUT /api/topics', async () => {
+    const sampleCardBody = [{
+      "_id": "a266488f577495b2805bf474",
+      "name": 'Example test name',
+      "description": 'Example test description',
+      "cards": ['e0dbdd80d092359d6c553cba']
+    }];
+    const postResponse = await fetch('post', '/api/topics', sampleCardBody);
+    const topic = await fetch('get', '/api/topics/a266488f577495b2805bf474');
+
+    expect(postResponse._id).toEqual(topic._id);
+    expect(postResponse.name).toEqual(topic.name);
+    expect(typeof postResponse.cards).toBe('array');
   });
 });

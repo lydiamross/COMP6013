@@ -84,7 +84,7 @@ module.exports = {
         return new Card(card).save()
       })
     } else {
-      checkObjectIdIsValid(card);
+      checkObjectIdIsValid(cards);
       return new Card(cards).save()
     }
   },
@@ -95,7 +95,7 @@ module.exports = {
         return new Topic(topic).save()
       })
     } else {
-      checkObjectIdIsValid(card);
+      checkObjectIdIsValid(topic);
       return new Topic(topic).save()
     }
   }

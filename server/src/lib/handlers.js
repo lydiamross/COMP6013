@@ -55,6 +55,26 @@ exports.getTopicByIdApi = async (req, res) => {
   res.json(topic);
 };
 
+exports.putCardApi = async (req, res) => {
+  const topic = await db.putCard(req.body);
+  res.json(topic);
+};
+
+exports.putTopicApi = async (req, res) => {
+  const topic = await db.putTopic(req.body);
+  res.json(topic);
+};
+
+exports.postCardsApi = async (req, res) => {
+  const cards = await db.postCards(req.body);
+  res.json(cards);
+};
+
+exports.postTopicsApi = async (req, res) => {
+  const topics = await db.postTopics(req.body);
+  res.json(topics);
+};
+
 exports.notFound = (req, res) => res.render('404');
 
 // eslint-disable-next-line no-unused-vars

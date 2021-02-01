@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 const mongoose = require('mongoose');
+const { checkObjectIdIsValid } = require("./utils");
 const Card = require('./models/card');
 const Topic = require('./models/topic');
 
@@ -68,4 +69,34 @@ module.exports = {
     const card = Topic.findOne({ _id: id });
     return card;
   },
+  putCard: async card => {
+    checkObjectIdIsValid(card);
+    return new Card(card).save()
+  },
+  putTopic: async topic => {
+    checkObjectIdIsValid(topic);
+    return new Topic(topic).save()
+  },
+  postCards: async cards => {
+    if (Array.isArray(cards)) {
+      cards.forEach(card => {
+        checkObjectIdIsValid(card);
+        return new Card(card).save()
+      })
+    } else {
+      checkObjectIdIsValid(cards);
+      return new Card(cards).save()
+    }
+  },
+  postTopics: async topics => {
+    if (Array.isArray(topics)) {
+      topics.forEach(topic => {
+        checkObjectIdIsValid(topic);
+        return new Topic(topic).save()
+      })
+    } else {
+      checkObjectIdIsValid(topic);
+      return new Topic(topic).save()
+    }
+  }
 };

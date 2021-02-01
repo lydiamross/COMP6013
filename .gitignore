@@ -7,3 +7,5 @@
 /client/build
 /client/.DS_Store
 /client/.eslintcache
+
+/node_modules

@@ -32,3 +32,25 @@ export const Section = styled.section`
   grid-row: 2;
   grid-column: 2;
 `;
+
+export const AddNewForm = styled.div`
+  color: palevioletred;
+  background: #ee6f2d;
+  padding: 10px;
+`;
+
+export const FormInput = styled.input`
+  border: none;
+  margin: 10px;
+  padding: 10px;
+
+  &:focus {
+    outline: 0;
+  }
+`;
+
+export const Button = styled.button`
+  margin: 10px;
+  border: none;
+  padding: 10px
+`;

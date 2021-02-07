@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Link } from 'react-router-dom';
+import { AddNewForm, FormInput, Button } from '../styled';
 
 const Topic = ({ topic }) => {
   return (
@@ -13,6 +14,8 @@ const Topic = ({ topic }) => {
 export const Topics = () => {
   const [topics, setTopics] = useState([]);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [topicName, setTopicName] = useState('');
+  const [topicDescription, setTopicDescription] = useState('');
 
   useEffect(() => {
     fetch('/api/topics')
@@ -20,13 +23,12 @@ export const Topics = () => {
       .then(setTopics);
   }, []);
 
-  const onClick =  async () => {
-    await fetch(`/api/topics`, {
+  const onClick = () => {
+    fetch(`/api/topics`, {
       method: 'PUT',
       body: JSON.stringify({
-        "createdDate": "2021-02-01T12:00:00.000Z",
-        "name": "Advanced Object-Oriented Programming",
-        "description": "COMP6018"
+        name: topicName,
+        description: topicDescription
       }),
       headers: { 'Content-Type': 'application/json' },
     })
@@ -52,10 +54,26 @@ export const Topics = () => {
             }}><Topic key={topic._id} topic={topic} /></Link>
           )
         }
-        <button
-          onClick={onClick}>
-          Submit
-        </button>
+        <AddNewForm>
+          <form onSubmit={onClick}>
+            <FormInput
+              type="name"
+              placeholder="Topic name"
+              value={topicName}
+              onChange={({ target: { value } }) => setTopicName(value)}
+              />
+            <FormInput
+              type="description"
+              placeholder="Topic description"
+              value={topicDescription}
+              onChange={({ target: { value } }) => setTopicDescription(value)}
+              />
+            <Button
+              type="submit"
+              disabled={!topicName}
+              >OK</Button>
+          </form>
+        </AddNewForm>
       </div>
     </>
   );

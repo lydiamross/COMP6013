@@ -1,39 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 const db = require('../db');
 
-/* No longer needed, but functionality will be reused
-exports.listTopics = async (req, res) => {
-  const topics = await db.getTopics();
-  const context = {
-    topics: topics.map((topic) => ({
-      _id: topic.id,
-      createdDate: topic.createdDate,
-      name: topic.name,
-      description: topic.description,
-      cards: `${topic.cards.join(', ')}`
-    })),
-  };
-  res.render('topic', context);
+exports.getCardsByTopicIdApi = async (req, res) => {
+  try {
+    const cards = await db.getCards({ topicId: req.params.topicId });
+    res.json(cards);
+  } catch(error) {
+    throw new Error(error);
+  }
 };
-
-exports.listCards = async (req, res) => {
-  const cards = await db.getCards();
-  const context = {
-    cards: cards.map((card) => ({
-      _id: card._id,
-      createdDate: card.createdDate,
-      updatedDate: card.updatedDate,
-      type: card.type,
-      topicId: card.topicId,
-      question: card.question,
-      answer: card.answer,
-      previousStatus: card.previousStatus,
-      previousAnswerDate: card.previousAnswerDate,
-    })),
-  };
-  res.render('card', context);
-};
-*/
 
 exports.getCardsApi = async (req, res) => {
   const cards = await db.getCards();
@@ -43,11 +18,6 @@ exports.getCardsApi = async (req, res) => {
 exports.getTopicsApi = async (req, res) => {
   const topics = await db.getTopics();
   res.json(topics);
-};
-
-exports.getCardByIdApi = async (req, res) => {
-  const card = await db.getCardById(req.params._id);
-  res.json(card);
 };
 
 exports.getTopicByIdApi = async (req, res) => {

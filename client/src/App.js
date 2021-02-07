@@ -7,7 +7,6 @@ import {
 import logo from './logo.png';
 import { Cards } from './components/Cards.js';
 import { Topics } from './components/Topics.js';
-import { Home } from './components/Home';
 import { About } from './components/About';
 import { NotFound } from './components/NotFound';
 import { Menu } from './components/Menu';
@@ -24,10 +23,9 @@ function App() {
         <Menu />
         <Section>
           <Switch>
-            <Route path="/" exact component={Home} />
+            <Route path="/" exact component={Topics} />
             <Route path="/about" exact component={About} />
             <Route path="/cards" exact component={Cards} />
-            <Route path="/topics" exact component={Topics} />
             <Route component={NotFound} />
           </Switch>
         </Section>

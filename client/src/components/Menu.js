@@ -19,10 +19,9 @@ export const Menu = () => {
         size="2x" />
       {isMenuDisplayed &&
         <DropdownMenu>
-          <li><Link to="/">Home</Link></li>
+          <li><Link to="/">Topics</Link></li>
           <li><Link to="/about">About</Link></li>
           <li><Link to="/cards">Cards</Link></li>
-          <li><Link to="/topics">Topics</Link></li>
         </DropdownMenu>
       }
     </MenuContainer >

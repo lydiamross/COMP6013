@@ -8,7 +8,7 @@ module.exports = (app) => {
 
   /** API Routes */
   app.get('/api/cards', handlers.getCardsApi);
-  app.get('/api/cards/:_id', handlers.getCardByIdApi);
+  app.get('/api/cards/:topicId', handlers.getCardsByTopicIdApi);
   app.get('/api/topics', handlers.getTopicsApi);
   app.get('/api/topics/:id', handlers.getTopicByIdApi);
   app.post('/api/topics', handlers.postTopicsApi);

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function Card({ card }) {
   return (
@@ -9,13 +10,23 @@ function Card({ card }) {
   )
 };
 
-export const Cards = () => {
+export const Cards = (props) => {
   const [cards, setCards] = useState([]);
+  const [redirectMessage, setRedirectMessage] = useState('');
 
   useEffect(() => {
-    fetch('/api/cards')
+    if (props.location.aboutProps !== undefined) {
+      fetch(`/api/cards/${props.location.aboutProps.topicId}`)
       .then(res => res.json())
       .then(setCards);
+    } else {
+      setRedirectMessage(
+        <div>
+          <h3>Topic not selected</h3>
+          <p>Please return <Link to="/">Home</Link></p>
+        </div>
+      );
+    }
   }, []);
 
   return (
@@ -26,6 +37,7 @@ export const Cards = () => {
           <Card key={card._id} card={card} />
         )}
       </div>
+      <div>{redirectMessage}</div>
     </>
   )
 };

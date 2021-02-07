@@ -21,6 +21,12 @@ export const Button = styled.button`
   padding: 10px
 `;
 
+export const CardContainer = styled.div`
+  margin: 10px;
+  padding: 10px;
+  border-style: dashed none;
+`;
+
 export const DropdownMenu = styled.ul`
   list-style: none;
 `;

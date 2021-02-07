@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import { NotFound } from './NotFound';
 
 function Card({ card }) {
   return (
@@ -9,13 +10,18 @@ function Card({ card }) {
   )
 };
 
-export const Cards = () => {
+export const Cards = (props) => {
   const [cards, setCards] = useState([]);
+  const [redirectMessage, setRedirectMessage] = useState('');
 
   useEffect(() => {
-    fetch('/api/cards')
+    if (props.location.aboutProps !== undefined) {
+      fetch(`/api/cards/${props.location.aboutProps.topicId}`)
       .then(res => res.json())
       .then(setCards);
+    } else {
+      setRedirectMessage(<NotFound />)
+    }
   }, []);
 
   return (
@@ -26,6 +32,7 @@ export const Cards = () => {
           <Card key={card._id} card={card} />
         )}
       </div>
+      <div>{redirectMessage}</div>
     </>
   )
 };

@@ -20,6 +20,7 @@ db.on('error', (err) => {
 });
 db.once('open', () => console.log('MongoDB connection running'));
 
+// Seed data
 Card.find((err, cards) => {
   if (err) return console.error(err);
   if (cards.length) return 0;
@@ -38,7 +39,7 @@ Card.find((err, cards) => {
     _id: 'e02425a5cb834bf041f721e8',
     createdDate: '2021-01-12T12:02:00.000Z',
     type: 'simple',
-    topicId: '07890edd92ee04e23ba383c5',
+    topicId: '07890edd92ee04e23ba383c6',
     question: 'Define atomicity',
     answer: 'An operation is considered atomic if it is guaranteed to be isolated from other operations that may be happening at the same time',
     previousStatus: 'confident',
@@ -54,17 +55,21 @@ Topic.find((err, topics) => {
     createdDate: '2021-01-12T12:00:00.000Z',
     name: 'Definitions',
     description: 'Computing terms',
-    cards: ['ccf5363ec9acf5cc76db6eba', 'e02425a5cb834bf041f721e8']
+    cards: ['ccf5363ec9acf5cc76db6eba']
+  }).save();
+
+  new Topic({
+    _id: '07890edd92ee04e23ba383c6',
+    createdDate: '2021-01-13T12:00:00.000Z',
+    name: 'Another topic',
+    description: 'Test',
+    cards: ['e02425a5cb834bf041f721e8']
   }).save();
 });
 
 module.exports = {
   getCards: async (options = {}) => Card.find(options),
   getTopics: async (options = {}) => Topic.find(options),
-  getCardById: async (id) => {
-    const card = Card.findOne({ _id: id });
-    return card;
-  },
   getTopicById: async (id) => {
     const card = Topic.findOne({ _id: id });
     return card;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function Topic({ topic }) {
   return (
@@ -23,7 +24,12 @@ export const Topics = () => {
       <h2>Topics</h2>
       <div className="topics">
         {topics.map(topic =>
-          <Topic key={topic._id} topic={topic} />
+          <Link to={{
+            pathname: "/cards",
+            aboutProps: {
+              topicId: topic._id
+            }
+            }}><Topic key={topic._id} topic={topic} /></Link>
         )}
       </div>
     </>

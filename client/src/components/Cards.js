@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useReducer } from 'react';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { AddNewForm, FormInput, Button, CardContainer } from '../styled';
@@ -13,13 +12,19 @@ function Card({ card }) {
   )
 };
 
+function usePersistedState(key, defaultValue) {
+  const [state, setState] = useState(localStorage.getItem(key) || defaultValue);
+  useEffect(() => { localStorage.setItem(key, state) }, [key, state]);
+  return [state, setState];
+}
+
 export const Cards = (props) => {
   const [cards, setCards] = useState([]);
-  const [redirectMessage, setRedirectMessage] = useState('');
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [cardQuestion, setCardQuestion] = useState('');
   const [cardAnswer, setCardAnswer] = useState('');
   const [isMenuDisplayed, setMenuDisplay] = useState(false);
+  const [topicPath, setPath] = usePersistedState('topicPath', undefined);
 
   function changeMenuDisplay() {
     setMenuDisplay(!isMenuDisplayed);
@@ -27,25 +32,22 @@ export const Cards = (props) => {
 
   useEffect(() => {
     if (props.location.aboutProps !== undefined) {
-      fetch(`/api/cards/${props.location.aboutProps.topicId}`)
-      .then(res => res.json())
-      .then(setCards);
-    } else {
-      setRedirectMessage(
-        <div>
-          <h3>Topic not selected</h3>
-          <p>Please return <Link to="/">Home</Link></p>
-        </div>
-      );
+      setPath(props.location.aboutProps.topicId);
+    } else if (topicPath !== undefined) {
+      setPath(topicPath);
     }
+    fetch(`/api/cards/${topicPath}`)
+      .then(res => res.json())
+      .then(setCards)
+      .catch(error => {
+        console.error('ERROR:', error);
+      });
   }, []);
 
   const onClick = () => {
     fetch(`/api/cards`, {
       method: 'PUT',
       body: JSON.stringify({
-        name: cardQuestion,
-        description: cardAnswer,
         type: 'simple',
         topicId: props.location.aboutProps.topicId,
         question: cardQuestion,
@@ -58,6 +60,9 @@ export const Cards = (props) => {
         cards.push(newCard);
         setCards(cards);
         forceUpdate();
+      })
+      .catch(error => {
+        console.error('ERROR:', error);
       });
   }
 
@@ -73,7 +78,7 @@ export const Cards = (props) => {
       <Button
         type="submit"
         onClick={changeMenuDisplay}
-        disabled={isMenuDisplayed || redirectMessage}>
+        disabled={isMenuDisplayed}>
         Add new <FontAwesomeIcon icon={faPlus} />
       </Button>
       {isMenuDisplayed && <AddNewForm>
@@ -100,7 +105,6 @@ export const Cards = (props) => {
           >OK</Button>
         </form>
       </AddNewForm>}
-      <div>{redirectMessage}</div>
     </>
   )
 };

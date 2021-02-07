@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { AddNewForm, FormInput, Button } from '../styled';
 
 const Topic = ({ topic }) => {
@@ -16,6 +18,11 @@ export const Topics = () => {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [topicName, setTopicName] = useState('');
   const [topicDescription, setTopicDescription] = useState('');
+  const [isMenuDisplayed, setMenuDisplay] = useState(false);
+
+  function changeMenuDisplay() {
+    setMenuDisplay(!isMenuDisplayed);
+  };
 
   useEffect(() => {
     fetch('/api/topics')
@@ -54,26 +61,33 @@ export const Topics = () => {
             }}><Topic key={topic._id} topic={topic} /></Link>
           )
         }
-        <AddNewForm>
+        <Button
+          type="submit"
+          onClick={changeMenuDisplay}
+          disabled={isMenuDisplayed}>
+          Add new <FontAwesomeIcon icon={faPlus} />
+        </Button>
+
+        {isMenuDisplayed && <AddNewForm>
           <form onSubmit={onClick}>
             <FormInput
               type="name"
               placeholder="Topic name"
               value={topicName}
               onChange={({ target: { value } }) => setTopicName(value)}
-              />
+            />
             <FormInput
               type="description"
               placeholder="Topic description"
               value={topicDescription}
               onChange={({ target: { value } }) => setTopicDescription(value)}
-              />
+            />
             <Button
               type="submit"
               disabled={!topicName}
-              >OK</Button>
+            >OK</Button>
           </form>
-        </AddNewForm>
+        </AddNewForm>}
       </div>
     </>
   );

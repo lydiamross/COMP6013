@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NotFound } from './NotFound';
+import { Link } from 'react-router-dom';
 
 function Card({ card }) {
   return (
@@ -20,7 +20,12 @@ export const Cards = (props) => {
       .then(res => res.json())
       .then(setCards);
     } else {
-      setRedirectMessage(<NotFound />)
+      setRedirectMessage(
+        <div>
+          <h3>Topic not selected</h3>
+          <p>Please return <Link to="/">Home</Link></p>
+        </div>
+      );
     }
   }, []);
 

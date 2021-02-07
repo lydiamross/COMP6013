@@ -6,7 +6,7 @@ exports.getCardsByTopicIdApi = async (req, res) => {
     const cards = await db.getCards({ topicId: req.params.topicId });
     res.json(cards);
   } catch(error) {
-    throw new Error(err);
+    throw new Error(error);
   }
 };
 

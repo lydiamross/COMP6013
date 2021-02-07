@@ -1,8 +1,14 @@
 import styled from 'styled-components'
 
+const COLOURS = {
+  ORANGE: `rgb(238, 111, 45)`,
+  PALE_ORANGE: `rgb(238, 111, 45, 0.5)`,
+  DARK_GREY: `#484848`
+}
+
 export const AddNewForm = styled.div`
-  color: #484848;
-  background: #ee6f2d;
+  color: ${COLOURS.DARK_GREY};
+  background: ${COLOURS.PALE_ORANGE};
   padding: 10px;
 `;
 
@@ -24,7 +30,7 @@ export const Button = styled.button`
 export const CardContainer = styled.div`
   margin: 10px;
   padding: 10px;
-  border-style: dashed none;
+  border-style: none none dashed none;
 `;
 
 export const DropdownMenu = styled.ul`

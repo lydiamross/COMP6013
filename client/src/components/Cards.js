@@ -73,12 +73,12 @@ export const Cards = (props) => {
       <Button
         type="submit"
         onClick={changeMenuDisplay}
-        disabled={isMenuDisplayed}>
+        disabled={isMenuDisplayed || redirectMessage}>
         Add new <FontAwesomeIcon icon={faPlus} />
       </Button>
       {isMenuDisplayed && <AddNewForm>
         <form onSubmit={onClick}>
-          <label for="question">Question: </label>
+          <label htmlFor="question">Question: </label>
           <FormInput
             type="text"
             name="question"
@@ -86,7 +86,7 @@ export const Cards = (props) => {
             onChange={({ target: { value } }) => setCardQuestion(value)}
           />
           <br />
-          <label for="answer">Answer: </label>
+          <label htmlFor="answer">Answer: </label>
           <FormInput
             type="text"
             name="answer"

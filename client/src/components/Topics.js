@@ -70,7 +70,7 @@ export const Topics = () => {
 
         {isMenuDisplayed && <AddNewForm>
           <form onSubmit={onClick}>
-            <label for="name">Topic name: </label>
+            <label htmlFor="name">Topic name: </label>
             <FormInput
               type="text"
               name="name"
@@ -78,7 +78,7 @@ export const Topics = () => {
               onChange={({ target: { value } }) => setTopicName(value)}
             />
             <br />
-            <label for="description">Topic description: </label>
+            <label htmlFor="description">Topic description: </label>
             <FormInput
               type="text"
               name="description"

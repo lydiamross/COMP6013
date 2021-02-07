@@ -2,14 +2,14 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { AddNewForm, FormInput, Button } from '../styled';
+import { AddNewForm, FormInput, Button, TopicContainer } from '../styled';
 
 const Topic = ({ topic }) => {
   return (
-    <div key={topic._id}>
+    <TopicContainer key={topic._id}>
       <h3>{topic.name}</h3>
       <p>{topic.description}</p>
-    </div>
+    </TopicContainer>
   )
 };
 
@@ -70,18 +70,22 @@ export const Topics = () => {
 
         {isMenuDisplayed && <AddNewForm>
           <form onSubmit={onClick}>
+            <label for="name">Topic name: </label>
             <FormInput
-              type="name"
-              placeholder="Topic name"
+              type="text"
+              name="name"
               value={topicName}
               onChange={({ target: { value } }) => setTopicName(value)}
             />
+            <br />
+            <label for="description">Topic description: </label>
             <FormInput
-              type="description"
-              placeholder="Topic description"
+              type="text"
+              name="description"
               value={topicDescription}
               onChange={({ target: { value } }) => setTopicDescription(value)}
             />
+            <br />
             <Button
               type="submit"
               disabled={!topicName}

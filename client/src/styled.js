@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 
-export const Logo = styled.img`
-  width:50px
+export const AddNewForm = styled.div`
+  color: #484848;
+  background: #ee6f2d;
+  padding: 10px;
 `;
 
 export const AppContainer = styled.div`
@@ -13,30 +15,14 @@ export const AppContainer = styled.div`
   grid-gap: 1em;
 `;
 
+export const Button = styled.button`
+  margin: 10px;
+  border: none;
+  padding: 10px
+`;
+
 export const DropdownMenu = styled.ul`
   list-style: none;
-`;
-
-export const MenuContainer = styled.nav`
-  text-align: left;
-  grid-row: 1;
-  grid-column: 1;
-`;
-
-export const Header = styled.header`
-  grid-row: 1;
-  grid-column: 2;
-`;
-
-export const Section = styled.section`
-  grid-row: 2;
-  grid-column: 2;
-`;
-
-export const AddNewForm = styled.div`
-  color: palevioletred;
-  background: #ee6f2d;
-  padding: 10px;
 `;
 
 export const FormInput = styled.input`
@@ -49,8 +35,28 @@ export const FormInput = styled.input`
   }
 `;
 
-export const Button = styled.button`
+export const Header = styled.header`
+  grid-row: 1;
+  grid-column: 2;
+`;
+
+export const Logo = styled.img`
+  width:50px
+`;
+
+export const MenuContainer = styled.nav`
+  text-align: left;
+  grid-row: 1;
+  grid-column: 1;
+`;
+
+export const Section = styled.section`
+  grid-row: 2;
+  grid-column: 2;
+`;
+
+export const TopicContainer = styled.div`
   margin: 10px;
-  border: none;
-  padding: 10px
+  padding: 10px;
+  border-style: dashed none;
 `;

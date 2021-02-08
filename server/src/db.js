@@ -104,12 +104,6 @@ module.exports = {
       return new Topic(topic).save()
     }
   },
-  deleteCard: async (id) => {
-    const card = Card.deleteOne({ _id: id });
-    return card;
-  },
-  deleteTopic: async (id) => {
-    const topic = Topic.deleteOne({ _id: id });
-    return topic;
-  },
+  deleteCard: async (id) => Card.deleteOne({ _id: id }),
+  deleteTopic: async (id) => Topic.deleteOne({ _id: id }),
 };

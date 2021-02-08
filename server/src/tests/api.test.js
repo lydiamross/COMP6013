@@ -133,3 +133,30 @@ describe('API tests on DELETE method', () => {
     expect(response.ok).toBe(1);
   });
 });
+
+describe('API tests on PATCH method', () => {
+  test('PATCH /api/cards', async () => {
+    const sampleCardUpdate = {
+      "_id": "cb97fbe70eab4ef2694ec5ff",
+      "status": "neutral",
+    };
+    const patchResponse = await fetch('patch', '/api/cards', sampleCardUpdate);
+    const card = await fetch('get', '/api/cards/cb97fbe70eab4ef2694ec5ff');
+
+    expect(patchResponse._id).toEqual(card._id);
+    expect(patchResponse.status).toEqual(card.status);
+  });
+
+  test('PATCH /api/topics', async () => {
+    const sampleTopicUpdate = [{
+      "_id": "a266488f577495b2805bf474",
+      "description": 'Updated test description',
+    }];
+    const postResponse = await fetch('patch', '/api/topics', sampleTopicUpdate);
+    const topic = await fetch('get', '/api/topics/a266488f577495b2805bf474');
+
+    expect(postResponse._id).toEqual(topic._id);
+    expect(postResponse.description).toEqual(topic.description);
+    expect(typeof postResponse.cards).toBe('array');
+  });
+});

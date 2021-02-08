@@ -25,7 +25,11 @@ export const Cards = (props) => {
 
   const handleNextButton = (event, page) => paginatedData.next(page);
   const handlePreviousButton = (event, page) => paginatedData.previous(page);
-  const handleFormDisplay = () => setFormDisplay(!isFormDisplayed);
+  
+  const handleFormDisplay = () => {
+    setFormDisplay(!isFormDisplayed);
+    setRedirectMessage('');
+  };
 
   useEffect(() => {
     setPath(props.location.aboutProps !== undefined ? props.location.aboutProps.topicId : topicPath);

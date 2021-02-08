@@ -1,24 +1,54 @@
-const express = require('express');
-const bodyParser = require('body-parser')
-const handlers = require('./lib/handlers');
+const cardController = require('./controllers/card.controller');
+const topicController = require('./controllers/topic.controller');
 
 module.exports = (app) => {
-  app.use(express.static(`${__dirname}/public`));
-  app.use(bodyParser.json());
+  app.get('/api/topics', async (req, res) => {
+    const topics = await topicController.getTopics();
+    res.json(topics);
+  });
 
-  /** API Routes */
-  app.get('/api/cards', handlers.getCardsApi);
-  app.get('/api/cards/:topicId', handlers.getCardsByTopicIdApi);
-  app.get('/api/topics', handlers.getTopicsApi);
-  app.get('/api/topics/:id', handlers.getTopicByIdApi);
-  app.post('/api/topics', handlers.postTopicsApi);
-  app.post('/api/cards', handlers.postCardsApi);
-  app.put('/api/topics', handlers.putTopicApi);
-  app.put('/api/cards', handlers.putCardApi);
-  app.delete('/api/cards/:id', handlers.deleteCardApi);
-  app.delete('/api/topics/:id', handlers.deleteTopicApi);
+  app.get('/api/topics/:id', async (req, res) => {
+    const topic = await topicController.getTopicById(req.params.id);
+    res.json(topic);
+  });
 
-  /** Error Routes */
-  app.use(handlers.notFound);
-  app.use(handlers.serverError);
+  app.post('/api/topics', async (req, res) => {
+    const topics = await topicController.postTopics(req.body);
+    res.json(topics);
+  });
+
+  app.put('/api/topics', async (req, res) => {
+    const topic = await topicController.putTopic(req.body);
+    res.json(topic);
+  });
+
+  app.delete('/api/topics/:id', async (req, res) => {
+    const topic = await topicController.deleteTopic(req.params.id);
+    res.json(topic);
+  });
+
+  app.get('/api/cards', async (req, res) => {
+    const cards = await cardController.getCards();
+    res.json(cards);
+  });
+
+  app.get('/api/cards/:topicId', async (req, res) => {
+    const cards = await cardController.getCards({ topicId: req.params.topicId });
+    res.json(cards);
+  });
+  
+  app.post('/api/cards', async (req, res) => {
+    const cards = await cardController.postCards(req.body);
+    res.json(cards);
+  });
+  
+  app.put('/api/cards', async (req, res) => {
+    const topic = await cardController.putCard(req.body);
+    res.json(topic);
+  });
+  
+  app.delete('/api/cards/:id', async (req, res) => {
+    const card = await cardController.deleteCard(req.params.id);
+    res.json(card);
+  });
 };

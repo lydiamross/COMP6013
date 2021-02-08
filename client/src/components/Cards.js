@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { AddNewForm, FormInput, Button, CardContainer } from '../styled';
@@ -20,14 +20,14 @@ function usePersistedState(key, defaultValue) {
 
 export const Cards = (props) => {
   const [cards, setCards] = useState([]);
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [cardQuestion, setCardQuestion] = useState('');
   const [cardAnswer, setCardAnswer] = useState('');
-  const [isMenuDisplayed, setMenuDisplay] = useState(false);
+  const [isFormDisplayed, setFormDisplay] = useState(false);
   const [topicPath, setPath] = usePersistedState('topicPath', undefined);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  function changeMenuDisplay() {
-    setMenuDisplay(!isMenuDisplayed);
+  function handleFormDisplay() {
+    setFormDisplay(!isFormDisplayed);
   };
 
   useEffect(() => {
@@ -62,6 +62,7 @@ export const Cards = (props) => {
         setCards(cards);
         setCardQuestion('');
         setCardAnswer('');
+        setFormDisplay(!isFormDisplayed);
         forceUpdate();
       })
       .catch(error => {
@@ -80,11 +81,11 @@ export const Cards = (props) => {
       </div>
       <Button
         type="submit"
-        onClick={changeMenuDisplay}
-        disabled={isMenuDisplayed}>
+        onClick={handleFormDisplay}
+        disabled={isFormDisplayed}>
         Add new <FontAwesomeIcon icon={faPlus} />
       </Button>
-      {isMenuDisplayed && <AddNewForm>
+      {isFormDisplayed && <AddNewForm>
         <form onSubmit={onClick}>
           <label htmlFor="question">Question: </label>
           <FormInput

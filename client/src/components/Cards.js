@@ -23,7 +23,7 @@ export const Cards = (props) => {
   const [cardQuestion, setCardQuestion] = useState('');
   const [cardAnswer, setCardAnswer] = useState('');
   const [isFormDisplayed, setFormDisplay] = useState(false);
-  const [topicPath, setPath] = usePersistedState('topicPath', undefined);
+  const [topicPath, setPath] = usePersistedState('topicPath', null);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   function handleFormDisplay() {
@@ -31,11 +31,7 @@ export const Cards = (props) => {
   };
 
   useEffect(() => {
-    if (props.location.aboutProps !== undefined) {
-      setPath(props.location.aboutProps.topicId);
-    } else if (topicPath !== undefined) {
-      setPath(topicPath);
-    }
+    setPath(props.location.aboutProps !== undefined ? props.location.aboutProps.topicId : topicPath);
     fetch(`/api/cards/${topicPath}`)
       .then(res => res.json())
       .then(setCards)

@@ -42,14 +42,15 @@ export const Cards = (props) => {
       .catch(error => {
         console.error('ERROR:', error);
       });
-  }, []);
+  }, [props.location.aboutProps, topicPath, setPath]);
 
-  const onClick = () => {
+  const onClick = (event) => {
+    event.preventDefault();
     fetch(`/api/cards`, {
       method: 'PUT',
       body: JSON.stringify({
         type: 'simple',
-        topicId: props.location.aboutProps.topicId,
+        topicId: topicPath,
         question: cardQuestion,
         answer: cardAnswer
       }),
@@ -59,6 +60,8 @@ export const Cards = (props) => {
       .then(newCard => {
         cards.push(newCard);
         setCards(cards);
+        setCardQuestion('');
+        setCardAnswer('');
         forceUpdate();
       })
       .catch(error => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { AddNewForm, FormInput, Button, TopicContainer } from '../styled';
 
 const Topic = ({ topic }) => {
@@ -18,19 +18,18 @@ export const Topics = () => {
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [topicName, setTopicName] = useState('');
   const [topicDescription, setTopicDescription] = useState('');
-  const [isMenuDisplayed, setMenuDisplay] = useState(false);
+  const [isFormDisplayed, setFormDisplay] = useState(false);
 
-  function changeMenuDisplay() {
-    setMenuDisplay(!isMenuDisplayed);
-  };
+  const handleFormDisplay = () => setFormDisplay(!isFormDisplayed);
 
   useEffect(() => {
     fetch('/api/topics')
-      .then(res => res.json())
+      .then(response => response.json())
       .then(setTopics);
   }, []);
 
-  const onClick = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     fetch(`/api/topics`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -43,56 +42,58 @@ export const Topics = () => {
       .then(newTopic => {
         topics.push(newTopic);
         setTopics(topics);
+        setTopicName('');
+        setTopicDescription('');
+        setFormDisplay(!isFormDisplayed);
         forceUpdate();
       });
   }
 
   return (
-    <>
+    <div className="topics">
       <h2>Topics</h2>
-      <div className="topics">
-        {topics.length !== 0 &&
-          topics.map(topic =>
-            <Link to={{
+      {topics.length !== 0 &&
+        topics.map(topic =>
+          <Link
+            to={{
               pathname: "/cards",
               aboutProps: {
                 topicId: topic._id
               }
-            }}><Topic key={topic._id} topic={topic} /></Link>
-          )
-        }
-        <Button
-          type="submit"
-          onClick={changeMenuDisplay}
-          disabled={isMenuDisplayed}>
-          Add new <FontAwesomeIcon icon={faPlus} />
-        </Button>
-
-        {isMenuDisplayed && <AddNewForm>
-          <form onSubmit={onClick}>
-            <label htmlFor="name">Topic name: </label>
-            <FormInput
-              type="text"
-              name="name"
-              value={topicName}
-              onChange={({ target: { value } }) => setTopicName(value)}
-            />
-            <br />
-            <label htmlFor="description">Topic description: </label>
-            <FormInput
-              type="text"
-              name="description"
-              value={topicDescription}
-              onChange={({ target: { value } }) => setTopicDescription(value)}
-            />
-            <br />
-            <Button
-              type="submit"
-              disabled={!topicName}
-            >OK</Button>
-          </form>
-        </AddNewForm>}
-      </div>
-    </>
+            }}
+            key={topic._id}>
+            <Topic topic={topic} />
+          </Link>
+        )
+      }
+      <Button
+        type="submit"
+        onClick={handleFormDisplay}>
+        {!isFormDisplayed ?
+          <span>Add new <FontAwesomeIcon icon={faPlus} /></span> :
+          <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
+      </Button>
+      {isFormDisplayed && <AddNewForm>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="name">Topic name: </label>
+          <FormInput
+            type="text"
+            name="name"
+            value={topicName}
+            onChange={({ target: { value } }) => setTopicName(value)} />
+          <br />
+          <label htmlFor="description">Topic description: </label>
+          <FormInput
+            type="text"
+            name="description"
+            value={topicDescription}
+            onChange={({ target: { value } }) => setTopicDescription(value)} />
+          <br />
+          <Button
+            type="submit"
+            disabled={!topicName}>OK</Button>
+        </form>
+      </AddNewForm>}
+    </div>
   );
 };

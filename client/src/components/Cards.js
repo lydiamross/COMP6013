@@ -1,22 +1,18 @@
-import { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { AddNewForm, FormInput, Button, CardContainer } from '../styled';
+import { usePagination } from '../utils/usePagination';
+import { usePersistedState } from '../utils/usePersistedState';
 
 function Card({ card }) {
   return (
     <CardContainer key={card._id}>
       <h3>{card.question}</h3>
       <p>{card.answer}</p>
-    </CardContainer> 
+    </CardContainer>
   )
 };
-
-function usePersistedState(key, defaultValue) {
-  const [state, setState] = useState(localStorage.getItem(key) || defaultValue);
-  useEffect(() => { localStorage.setItem(key, state) }, [key, state]);
-  return [state, setState];
-}
 
 export const Cards = (props) => {
   const [cards, setCards] = useState([]);
@@ -25,22 +21,25 @@ export const Cards = (props) => {
   const [isFormDisplayed, setFormDisplay] = useState(false);
   const [topicPath, setPath] = usePersistedState('topicPath', null);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
+  const [redirectMessage, setRedirectMessage] = useState();
 
-  function handleFormDisplay() {
-    setFormDisplay(!isFormDisplayed);
-  };
+  const handleNextButton = (event, page) => paginatedData.next(page);
+  const handlePreviousButton = (event, page) => paginatedData.previous(page);
+  const handleFormDisplay = () => setFormDisplay(!isFormDisplayed);
 
   useEffect(() => {
     setPath(props.location.aboutProps !== undefined ? props.location.aboutProps.topicId : topicPath);
     fetch(`/api/cards/${topicPath}`)
-      .then(res => res.json())
+      .then(response => response.json())
       .then(setCards)
       .catch(error => {
         console.error('ERROR:', error);
       });
   }, [props.location.aboutProps, topicPath, setPath]);
 
-  const onClick = (event) => {
+  const paginatedData = usePagination(cards, 1);
+
+  const handleSubmit = (event) => {
     event.preventDefault();
     fetch(`/api/cards`, {
       method: 'PUT',
@@ -60,51 +59,58 @@ export const Cards = (props) => {
         setCardAnswer('');
         setFormDisplay(!isFormDisplayed);
         forceUpdate();
+        setRedirectMessage('Card added');
       })
       .catch(error => {
         console.error('ERROR:', error);
+        setRedirectMessage('Error - Card not added');
       });
-  }
+  };
 
   return (
-    <>
+    <div className="cards">
       <h2>Cards</h2>
-      <div className="cards">
         {cards.length !== 0 &&
-          cards.map(card =>
+          paginatedData.currentData().map(card =>
             <Card key={card._id} card={card} />
-        )}
+          )}
+      <div>
+        <Button
+          onClick={handlePreviousButton}
+          disabled={paginatedData.currentPage <= 1}>Previous</Button>
+        <Button
+          onClick={handleNextButton}
+          disabled={paginatedData.maxPage <= paginatedData.currentPage}>Next</Button>
       </div>
       <Button
         type="submit"
-        onClick={handleFormDisplay}
-        disabled={isFormDisplayed}>
-        Add new <FontAwesomeIcon icon={faPlus} />
+        onClick={handleFormDisplay}>
+        {!isFormDisplayed ? 
+          <span>Add new <FontAwesomeIcon icon={faPlus} /></span> :
+          <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
       </Button>
       {isFormDisplayed && <AddNewForm>
-        <form onSubmit={onClick}>
+        <form onSubmit={handleSubmit}>
           <label htmlFor="question">Question: </label>
           <FormInput
             type="text"
             name="question"
             value={cardQuestion}
-            onChange={({ target: { value } }) => setCardQuestion(value)}
-          />
+            onChange={({ target: { value } }) => setCardQuestion(value)} />
           <br />
           <label htmlFor="answer">Answer: </label>
           <FormInput
             type="text"
             name="answer"
             value={cardAnswer}
-            onChange={({ target: { value } }) => setCardAnswer(value)}
-          />
+            onChange={({ target: { value } }) => setCardAnswer(value)} />
           <br />
           <Button
             type="submit"
-            disabled={!cardQuestion || !cardAnswer}
-          >OK</Button>
+            disabled={!cardQuestion || !cardAnswer}>OK</Button>
         </form>
       </AddNewForm>}
-    </>
+      <p>{redirectMessage}</p>
+    </div>
   )
 };

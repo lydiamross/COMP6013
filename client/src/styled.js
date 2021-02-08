@@ -3,7 +3,10 @@ import styled from 'styled-components'
 const COLOURS = {
   ORANGE: `rgb(238, 111, 45)`,
   PALE_ORANGE: `rgb(238, 111, 45, 0.5)`,
-  DARK_GREY: `#484848`
+  DARK_GREY: `#484848`,
+  GREEN: `#8ac926`,
+  YELLOW: `#ffca3a`,
+  RED: `#ff595e`,
 }
 
 export const AddNewForm = styled.div`
@@ -24,7 +27,7 @@ export const AppContainer = styled.div`
 export const Button = styled.button`
   margin: 10px;
   border: none;
-  padding: 10px
+  padding: 10px;
 `;
 
 export const CardContainer = styled.div`
@@ -41,10 +44,6 @@ export const FormInput = styled.input`
   border: none;
   margin: 10px;
   padding: 10px;
-
-  &:focus {
-    outline: 0;
-  }
 `;
 
 export const Header = styled.header`
@@ -70,5 +69,5 @@ export const Section = styled.section`
 export const TopicContainer = styled.div`
   margin: 10px;
   padding: 10px;
-  border-style: dashed none;
+  border-style: none none dashed none;
 `;

@@ -108,4 +108,8 @@ module.exports = {
     const card = Card.deleteOne({ _id: id });
     return card;
   },
+  deleteTopic: async (id) => {
+    const topic = Topic.deleteOne({ _id: id });
+    return topic;
+  },
 };

@@ -103,5 +103,9 @@ module.exports = {
       checkObjectIdIsValid(topic);
       return new Topic(topic).save()
     }
-  }
+  },
+  deleteCard: async (id) => {
+    const card = Card.deleteOne({ _id: id });
+    return card;
+  },
 };

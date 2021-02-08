@@ -31,7 +31,6 @@ function listen() {
 }
 
 function connect() {
-  var options = { keepAlive: 1, useNewUrlParser: true };
-  mongoose.connect(process.env.MONGO_URL, options);
+  mongoose.connect(process.env.MONGO_URL, { keepAlive: 1, useNewUrlParser: true });
   return mongoose.connection;
 }

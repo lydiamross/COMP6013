@@ -45,6 +45,15 @@ exports.postTopicsApi = async (req, res) => {
   res.json(topics);
 };
 
+exports.deleteCardApi = async (req, res) => {
+  const card = await db.deleteCard(req.params.id);
+  res.json(card);
+};
+exports.deleteTopicApi = async (req, res) => {
+  const topic = await db.deleteTopic(req.params.id);
+  res.json(topic);
+};
+
 exports.notFound = (req, res) => res.render('404');
 
 // eslint-disable-next-line no-unused-vars

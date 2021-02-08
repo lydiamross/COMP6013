@@ -113,3 +113,23 @@ describe('API tests on PUT method', () => {
     expect(typeof postResponse.cards).toBe('array');
   });
 });
+
+describe('API tests on DELETE method', () => {
+  test('DELETE /api/cards/:_id', async () => {
+    const cards = await fetch('get', '/api/cards');
+    expect(cards.length).not.toBe(0);
+    const firstCard = cards[0];
+    const response = await fetch('delete', `/api/cards/${firstCard._id}`);
+    expect(response.deletedCount).toBe(1);
+    expect(response.ok).toBe(1);
+  });
+
+  test('DELETE /api/topics/:_id', async () => {
+    const topics = await fetch('get', '/api/topics');
+    expect(topics.length).not.toBe(0);
+    const firstTopic = topics[0];
+    const response = await fetch('delete', `/api/topics/${firstTopic._id}`);
+    expect(response.deletedCount).toBe(1);
+    expect(response.ok).toBe(1);
+  });
+});

@@ -15,6 +15,8 @@ module.exports = (app) => {
   app.post('/api/cards', handlers.postCardsApi);
   app.put('/api/topics', handlers.putTopicApi);
   app.put('/api/cards', handlers.putCardApi);
+  app.delete('/api/cards/:id', handlers.deleteCardApi);
+  app.delete('/api/topics/:id', handlers.deleteTopicApi);
 
   /** Error Routes */
   app.use(handlers.notFound);

@@ -103,5 +103,7 @@ module.exports = {
       checkObjectIdIsValid(topic);
       return new Topic(topic).save()
     }
-  }
+  },
+  deleteCard: async (id) => Card.deleteOne({ _id: id }),
+  deleteTopic: async (id) => Topic.deleteOne({ _id: id }),
 };

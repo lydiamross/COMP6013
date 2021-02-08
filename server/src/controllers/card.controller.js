@@ -20,11 +20,25 @@ const postCards = async cards => {
   }
 };
 
+const updateCard = async (card) => Card.updateOne(
+  {
+    _id: card._id
+  },
+  {
+    $set: {
+      updatedDate: new Date(),
+      previousStatus: card.status,
+      previousAnswerDate: card.updatedDate,
+    }
+  }
+);
+
 const deleteCard = async (id) => Card.deleteOne({ _id: id });
 
 module.exports = {
   getCards,
   putCard,
   postCards,
+  updateCard,
   deleteCard,
 };

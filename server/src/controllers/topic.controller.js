@@ -25,6 +25,18 @@ const postTopics = async topics => {
   }
 };
 
+const updateTopic = async (topic) => Topic.updateOne(
+  {
+    _id: topic._id
+  },
+  {
+    $set: {
+      updatedDate: new Date(),
+      description: topic.description
+    },
+  }
+);
+
 const deleteTopic = async (id) => Topic.deleteOne({ _id: id });
 
 module.exports = {
@@ -32,5 +44,6 @@ module.exports = {
   getTopicById,
   putTopic,
   postTopics,
+  updateTopic,
   deleteTopic,
 };

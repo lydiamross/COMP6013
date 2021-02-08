@@ -22,6 +22,11 @@ module.exports = (app) => {
     res.json(topic);
   });
 
+  app.patch('/api/topics', async (req, res) => {
+    const topic = await topicController.updateTopic(req.body);
+    res.json(topic);
+  });
+
   app.delete('/api/topics/:id', async (req, res) => {
     const topic = await topicController.deleteTopic(req.params.id);
     res.json(topic);
@@ -36,17 +41,22 @@ module.exports = (app) => {
     const cards = await cardController.getCards({ topicId: req.params.topicId });
     res.json(cards);
   });
-  
+
   app.post('/api/cards', async (req, res) => {
     const cards = await cardController.postCards(req.body);
     res.json(cards);
   });
-  
+
   app.put('/api/cards', async (req, res) => {
-    const topic = await cardController.putCard(req.body);
-    res.json(topic);
+    const card = await cardController.putCard(req.body);
+    res.json(card);
   });
-  
+
+  app.patch('/api/cards', async (req, res) => {
+    const card = await cardController.updateCard(req.body);
+    res.json(card);
+  });
+
   app.delete('/api/cards/:id', async (req, res) => {
     const card = await cardController.deleteCard(req.params.id);
     res.json(card);

@@ -21,7 +21,6 @@ export const Menu = () => {
         <DropdownMenu>
           <li><Link to="/">Topics</Link></li>
           <li><Link to="/about">About</Link></li>
-          <li><Link to="/cards">Cards</Link></li>
         </DropdownMenu>
       }
     </MenuContainer >

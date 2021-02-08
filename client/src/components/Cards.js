@@ -77,8 +77,14 @@ export const Cards = (props) => {
           )}
       </div>
       <div>
-        <Button onClick={handlePreviousButton}>Previous</Button>
-        <Button onClick={handleNextButton}>Next</Button>
+        <Button
+          onClick={handlePreviousButton}
+          disabled={paginatedData.currentPage <= 1}
+          >Previous</Button>
+        <Button
+          onClick={handleNextButton}
+          disabled={paginatedData.maxPage <= paginatedData.currentPage}
+          >Next</Button>
       </div>
       <Button
         type="submit"

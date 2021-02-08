@@ -27,7 +27,7 @@ connection
 function listen() {
   if (app.get('env') === 'test') return;
   app.listen(port);
-  console.log('Express app started on port ' + port);
+  console.log(`Server started on port ${port}, press Ctrl-C to terminate...`);
 }
 
 function connect() {

@@ -45,58 +45,55 @@ export const Topics = () => {
         setTopicName('');
         setTopicDescription('');
         setFormDisplay(!isFormDisplayed);
-        forceUpdate();        
+        forceUpdate();
       });
   }
 
   return (
-    <>
+    <div className="topics">
       <h2>Topics</h2>
-      <div className="topics">
-        {topics.length !== 0 &&
-          topics.map(topic =>
-            <Link
-              to={{
-                pathname: "/cards",
-                aboutProps: {
-                  topicId: topic._id
-                }
-              }}
-              key={topic._id}>
-              <Topic topic={topic} />
-            </Link>
-          )
-        }
-        <Button
-          type="submit"
-          onClick={handleFormDisplay}
-          >
-          {!isFormDisplayed ? 
-            <span>Add new <FontAwesomeIcon icon={faPlus} /></span> :
-            <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
-        </Button>
-        {isFormDisplayed && <AddNewForm>
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="name">Topic name: </label>
-            <FormInput
-              type="text"
-              name="name"
-              value={topicName}
-              onChange={({ target: { value } }) => setTopicName(value)} />
-            <br />
-            <label htmlFor="description">Topic description: </label>
-            <FormInput
-              type="text"
-              name="description"
-              value={topicDescription}
-              onChange={({ target: { value } }) => setTopicDescription(value)} />
-            <br />
-            <Button
-              type="submit"
-              disabled={!topicName}>OK</Button>
-          </form>
-        </AddNewForm>}
-      </div>
-    </>
+      {topics.length !== 0 &&
+        topics.map(topic =>
+          <Link
+            to={{
+              pathname: "/cards",
+              aboutProps: {
+                topicId: topic._id
+              }
+            }}
+            key={topic._id}>
+            <Topic topic={topic} />
+          </Link>
+        )
+      }
+      <Button
+        type="submit"
+        onClick={handleFormDisplay}>
+        {!isFormDisplayed ?
+          <span>Add new <FontAwesomeIcon icon={faPlus} /></span> :
+          <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
+      </Button>
+      {isFormDisplayed && <AddNewForm>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="name">Topic name: </label>
+          <FormInput
+            type="text"
+            name="name"
+            value={topicName}
+            onChange={({ target: { value } }) => setTopicName(value)} />
+          <br />
+          <label htmlFor="description">Topic description: </label>
+          <FormInput
+            type="text"
+            name="description"
+            value={topicDescription}
+            onChange={({ target: { value } }) => setTopicDescription(value)} />
+          <br />
+          <Button
+            type="submit"
+            disabled={!topicName}>OK</Button>
+        </form>
+      </AddNewForm>}
+    </div>
   );
 };

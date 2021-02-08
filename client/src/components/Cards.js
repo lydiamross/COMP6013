@@ -68,28 +68,23 @@ export const Cards = (props) => {
   };
 
   return (
-    <>
+    <div className="cards">
       <h2>Cards</h2>
-      <div className="cards">
         {cards.length !== 0 &&
           paginatedData.currentData().map(card =>
             <Card key={card._id} card={card} />
           )}
-      </div>
       <div>
         <Button
           onClick={handlePreviousButton}
-          disabled={paginatedData.currentPage <= 1}
-          >Previous</Button>
+          disabled={paginatedData.currentPage <= 1}>Previous</Button>
         <Button
           onClick={handleNextButton}
-          disabled={paginatedData.maxPage <= paginatedData.currentPage}
-          >Next</Button>
+          disabled={paginatedData.maxPage <= paginatedData.currentPage}>Next</Button>
       </div>
       <Button
         type="submit"
-        onClick={handleFormDisplay}
-        >
+        onClick={handleFormDisplay}>
         {!isFormDisplayed ? 
           <span>Add new <FontAwesomeIcon icon={faPlus} /></span> :
           <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
@@ -116,6 +111,6 @@ export const Cards = (props) => {
         </form>
       </AddNewForm>}
       <p>{redirectMessage}</p>
-    </>
+    </div>
   )
 };

@@ -4,6 +4,7 @@ const COLOURS = {
   ORANGE: `rgb(238, 111, 45)`,
   PALE_ORANGE: `rgb(238, 111, 45, 0.5)`,
   DARK_GREY: `#484848`,
+  LIGHT_GREY: `#c8c8c8`,
   GREEN: `#8ac926`,
   YELLOW: `#ffca3a`,
   RED: `#ff595e`,
@@ -21,7 +22,7 @@ export const AppContainer = styled.div`
   font-family: Arial, Verdana, sans-serif;
   display: grid;
   grid-template-columns: 100px auto;
-  grid-template-rows: repeat(3, 100px);
+  grid-template-rows: repeat(2, 40px);
   grid-gap: 1em;
 `;
 
@@ -29,12 +30,12 @@ export const Button = styled.button`
   margin: 10px;
   border: none;
   padding: 10px;
+  border-radius: 10px;
 `;
 
 export const CardContainer = styled.div`
   margin: 10px;
   padding: 10px;
-  border-style: none none dashed none;
 `;
 
 export const DropdownMenu = styled.ul`
@@ -68,21 +69,29 @@ export const Section = styled.section`
 `;
 
 export const TopicContainer = styled.div`
-  margin: 10px;
-  padding: 10px;
-  border-style: none none dashed none;
-  `;
-  
-  export const CardQuestion = styled.div`
-  background: ${COLOURS.DARK_GREY};
-  color: ${COLOURS.WHTIE};
-  margin: 10px;
-  padding: 10px;
-  `;
-  
-  export const CardAnswer = styled.div`
-  background: ${COLOURS.ORANGE};
+  background: ${COLOURS.LIGHT_GREY};
   color: ${COLOURS.DARK_GREY};
-  margin: 10px;
+  margin: 20px auto;
   padding: 10px;
+  width: 40%;
+  align-content: center;
+  border-radius: 10px;
+  `;
+  
+export const CardContent = styled.div`
+  margin: auto;
+  padding: 10px;
+  width: 40%;
+  align-content: center;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
+
+  ${props => props.showFront
+    ? 
+    `background: ${COLOURS.WHITE};
+    color: ${COLOURS.DARK_GREY};`
+    :
+    `background: ${COLOURS.DARK_GREY};
+    color: ${COLOURS.WHTIE};`
+    }
 `;

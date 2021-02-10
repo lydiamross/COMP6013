@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CardContainer, CardQuestion, CardAnswer } from '../styled';
+import { CardContainer, CardContent } from '../styled';
 
 export const Card = ({ card }) => {
   const [showFront, setShowFront] = useState(true);
@@ -12,15 +12,23 @@ export const Card = ({ card }) => {
     <CardContainer key={card._id}>
       {showFront
         ?
-        <CardQuestion
-          onClick={onChange}>
-          <p>{card.question}</p>
-        </CardQuestion>
+        <div>
+          <p>Question</p>
+          <CardContent
+            showFront={showFront}
+            onClick={onChange}>
+            <h3>{card.question}</h3>
+          </CardContent>
+        </div>
         :
-        <CardAnswer
-          onClick={onChange}>
-          <p>{card.answer}</p>
-        </CardAnswer>
+        <div>
+          <p>Answer</p>
+          <CardContent
+            showFront={showFront}
+            onClick={onChange}>
+            <h3>{card.answer}</h3>
+          </CardContent>
+        </div>
       }
     </CardContainer>
   );

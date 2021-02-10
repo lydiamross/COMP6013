@@ -1,45 +1,37 @@
 import React, { useState, useEffect, useReducer } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { AddNewForm, FormInput, Button, CardContainer } from '../styled';
+import { AddNewForm, FormInput, Button } from '../styled';
 import { usePagination } from '../utils/usePagination';
 import { usePersistedState } from '../utils/usePersistedState';
-
-function Card({ card }) {
-  return (
-    <CardContainer key={card._id}>
-      <h3>{card.question}</h3>
-      <p>{card.answer}</p>
-    </CardContainer>
-  )
-};
+import { Card } from './Card';
 
 export const Cards = (props) => {
   const [cards, setCards] = useState([]);
   const [cardQuestion, setCardQuestion] = useState('');
   const [cardAnswer, setCardAnswer] = useState('');
   const [isFormDisplayed, setFormDisplay] = useState(false);
-  const [topicPath, setPath] = usePersistedState('topicPath', null);
+  const [topicPath, setTopicPath] = usePersistedState('topicPath', null);
+  const [topicName, setTopicName] = usePersistedState('topicName', null);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [redirectMessage, setRedirectMessage] = useState();
 
-  const handleNextButton = (event, page) => paginatedData.next(page);
-  const handlePreviousButton = (event, page) => paginatedData.previous(page);
-  
   const handleFormDisplay = () => {
     setFormDisplay(!isFormDisplayed);
     setRedirectMessage('');
   };
 
   useEffect(() => {
-    setPath(props.location.aboutProps !== undefined ? props.location.aboutProps.topicId : topicPath);
+    setTopicPath(props.location.aboutProps !== undefined ? props.location.aboutProps.topicId : topicPath);
+    setTopicName(props.location.aboutProps !== undefined ? props.location.aboutProps.topicName : topicName);
     fetch(`/api/cards/${topicPath}`)
       .then(response => response.json())
       .then(setCards)
       .catch(error => {
         console.error('ERROR:', error);
       });
-  }, [props.location.aboutProps, topicPath, setPath]);
+  }, [props.location.aboutProps, topicPath, topicName, setTopicPath, setTopicName]);
 
   const paginatedData = usePagination(cards, 1);
 
@@ -71,26 +63,62 @@ export const Cards = (props) => {
       });
   };
 
+  const handleUpdateCard = (event, page) => {
+    event.preventDefault();
+    fetch(`/api/cards`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        _id: paginatedData.currentData()[0]._id,
+        type: 'simple',
+        updatedDate: new Date(),
+        status: 'Neutral',
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => response.json())
+      .then(() => paginatedData.next(page))
+      .catch(error => {
+        console.error('ERROR:', error);
+        setRedirectMessage('Error');
+      });
+  };
+  const canViewAssessmentButtons =
+    (paginatedData.currentData().length !== 0) && 
+    (paginatedData.currentPage <= paginatedData.maxPage);
+
+  const canViewSuccessMessage =
+    (paginatedData.maxPage !== 0) &&
+    (paginatedData.currentPage > paginatedData.maxPage);
+
   return (
     <div className="cards">
-      <h2>Cards</h2>
-        {cards.length !== 0 &&
-          paginatedData.currentData().map(card =>
-            <Card key={card._id} card={card} />
-          )}
-      <div>
-        <Button
-          onClick={handlePreviousButton}
-          disabled={paginatedData.currentPage <= 1}>Previous</Button>
-        <Button
-          onClick={handleNextButton}
-          disabled={paginatedData.maxPage <= paginatedData.currentPage}>Next</Button>
-      </div>
+      <h2>{topicName}</h2>
+      {cards.length !== 0 &&
+        paginatedData.currentData().map(card =>
+          <Card key={card._id} card={card} />
+        )}
+      {canViewAssessmentButtons &&
+        <div>
+          <Button
+            onClick={handleUpdateCard}
+            title="0">I don't know this at all</Button>
+          <Button
+            onClick={handleUpdateCard}
+            title="1">I sort of know this </Button>
+          <Button
+            onClick={handleUpdateCard}
+            title="2">I'm really confident with this one</Button>
+        </div>}
+      {canViewSuccessMessage &&
+        <div>
+          <div>Well done!</div>
+          <p>Please return <Link to="/">Home</Link></p>
+        </div>}
       <Button
         type="submit"
         onClick={handleFormDisplay}>
-        {!isFormDisplayed ? 
-          <span>Add new <FontAwesomeIcon icon={faPlus} /></span> :
+        {!isFormDisplayed ?
+          <span>Add new card <FontAwesomeIcon icon={faPlus} /></span> :
           <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
       </Button>
       {isFormDisplayed && <AddNewForm>

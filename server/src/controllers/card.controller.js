@@ -1,4 +1,4 @@
-const { checkObjectIdIsValid } = require("../utils");
+const { checkObjectIdIsValid } = require("../utils/checkObjectIdIsValid");
 const Card = require('../models/card.model');
 
 const getCards = async (options = {}) => Card.find(options);
@@ -20,14 +20,12 @@ const postCards = async cards => {
   }
 };
 
-const updateCard = async (card) => Card.updateOne(
-  {
+const updateCard = async (card) => Card.updateOne({
     _id: card._id
-  },
-  {
+  },{
     $set: {
       updatedDate: new Date(),
-      previousStatus: card.status,
+      status: card.status,
       previousAnswerDate: card.updatedDate,
     }
   }

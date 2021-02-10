@@ -23,8 +23,7 @@ const cardSchema = mongoose.Schema({
   topicId: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' },
   question: mongoose.Schema.Types.String,
   answer: mongoose.Schema.Types.String,
-  previousStatus: { type: mongoose.Schema.Types.String, enum: STATUSTYPES },
-  previousAnswerDate: mongoose.Schema.Types.Date,
+  status: { type: mongoose.Schema.Types.String, enum: STATUSTYPES },
 });
 
 const Card = mongoose.model('Card', cardSchema);

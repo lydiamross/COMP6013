@@ -1,8 +1,9 @@
 require('dotenv').config();
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 const express = require('express');
+const createError = require('http-errors');
 const mongoose = require('mongoose');
-const addRoutes = require('./routes');
+const apiRoutes = require('./routes');
 
 const port = process.env.PORT || 8080;
 
@@ -12,7 +13,13 @@ const connection = connect();
 app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.json());
 
-addRoutes(app);
+app.use('/api', apiRoutes);
+
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+app.use((err, req, res, next) => res.status(500).send(err));
 
 module.exports = {
   app,

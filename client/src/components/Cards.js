@@ -69,9 +69,8 @@ export const Cards = (props) => {
       method: 'PATCH',
       body: JSON.stringify({
         _id: paginatedData.currentData()[0]._id,
-        type: 'simple',
         updatedDate: new Date(),
-        status: 'Neutral',
+        status: event.target.title,
       }),
       headers: { 'Content-Type': 'application/json' },
     })
@@ -100,14 +99,14 @@ export const Cards = (props) => {
       {canViewAssessmentButtons &&
         <div>
           <Button
-            onClick={handleUpdateCard}
-            title="0">I don't know this at all</Button>
+            title="unsure"
+            onClick={handleUpdateCard}>I don't remember this at all</Button>
           <Button
-            onClick={handleUpdateCard}
-            title="1">I sort of know this </Button>
+            title="neutral"
+            onClick={handleUpdateCard}>I barely know this </Button>
           <Button
-            onClick={handleUpdateCard}
-            title="2">I'm really confident with this one</Button>
+            title="confident"
+            onClick={handleUpdateCard}>I'm confident I know this</Button>
         </div>}
       {canViewSuccessMessage &&
         <div>

@@ -58,7 +58,8 @@ export const Topics = () => {
             to={{
               pathname: "/cards",
               aboutProps: {
-                topicId: topic._id
+                topicId: topic._id,
+                topicName: topic.name
               }
             }}
             key={topic._id}>
@@ -70,7 +71,7 @@ export const Topics = () => {
         type="submit"
         onClick={handleFormDisplay}>
         {!isFormDisplayed ?
-          <span>Add new <FontAwesomeIcon icon={faPlus} /></span> :
+          <span>Add new topic <FontAwesomeIcon icon={faPlus} /></span> :
           <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
       </Button>
       {isFormDisplayed && <AddNewForm>

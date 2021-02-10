@@ -1,4 +1,4 @@
-const { checkObjectIdIsValid } = require("../utils");
+const { checkObjectIdIsValid } = require("../utils/checkObjectIdIsValid");
 const Topic = require('../models/topic.model');
 
 const getTopics = async (options = {}) => Topic.find(options);

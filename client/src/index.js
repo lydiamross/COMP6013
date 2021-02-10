@@ -20,7 +20,6 @@ ReactDOM.render(
       <Router>
         <Header>
           <Link to="/"><Logo src={logo} alt="Logo" /></Link>
-          {/* <h1>Learnr</h1> */}
         </Header>
         <Menu />
         <Section>

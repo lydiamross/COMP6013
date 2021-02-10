@@ -46,11 +46,6 @@ router.get('/cards/:topicId', async (req, res) => {
 
 router.post('/cards', async (req, res) => {
   const cards = await cardController.postCards(req.body);
-  // cards.map(async card =>
-  //   await topicController.updateTopic({
-  //     $addToSet: { cards: card._id }
-  //   })
-  // );
   res.json(cards);
 });
 

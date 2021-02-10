@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
 const COLOURS = {
+  WHTIE: `#ffffff`,
+  LIGHT_GREY: `#c8c8c8`,
+  DARK_GREY: `#484848`,
   ORANGE: `rgb(238, 111, 45)`,
   PALE_ORANGE: `rgb(238, 111, 45, 0.5)`,
-  DARK_GREY: `#484848`,
-  LIGHT_GREY: `#c8c8c8`,
   GREEN: `#8ac926`,
   YELLOW: `#ffca3a`,
   RED: `#ff595e`,
-  WHTIE: `#ffffff`,
 }
 
 export const AddNewForm = styled.div`
@@ -36,6 +36,24 @@ export const Button = styled.button`
 export const CardContainer = styled.div`
   margin: 10px;
   padding: 10px;
+`;
+
+export const CardContent = styled.div`
+  margin: auto;
+  padding: 10px;
+  width: 40%;
+  align-content: center;
+  border-radius: 10px;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
+
+  ${props => props.showFront
+    ? 
+    `background: ${COLOURS.WHITE};
+    color: ${COLOURS.DARK_GREY};`
+    :
+    `background: ${COLOURS.DARK_GREY};
+    color: ${COLOURS.WHTIE};`
+    }
 `;
 
 export const DropdownMenu = styled.ul`
@@ -76,22 +94,4 @@ export const TopicContainer = styled.div`
   width: 40%;
   align-content: center;
   border-radius: 10px;
-  `;
-  
-export const CardContent = styled.div`
-  margin: auto;
-  padding: 10px;
-  width: 40%;
-  align-content: center;
-  border-radius: 10px;
-  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .3);
-
-  ${props => props.showFront
-    ? 
-    `background: ${COLOURS.WHITE};
-    color: ${COLOURS.DARK_GREY};`
-    :
-    `background: ${COLOURS.DARK_GREY};
-    color: ${COLOURS.WHTIE};`
-    }
 `;

@@ -4,7 +4,7 @@ import { CardContainer, CardContent } from '../styled';
 export const Card = ({ card }) => {
   const [showFront, setShowFront] = useState(true);
 
-  const onChange = () => {
+  const handleFlip = () => {
     setShowFront(!showFront);
   }
 
@@ -16,7 +16,7 @@ export const Card = ({ card }) => {
           <p>Question</p>
           <CardContent
             showFront={showFront}
-            onClick={onChange}>
+            onClick={handleFlip}>
             <h3>{card.question}</h3>
           </CardContent>
         </div>
@@ -25,7 +25,7 @@ export const Card = ({ card }) => {
           <p>Answer</p>
           <CardContent
             showFront={showFront}
-            onClick={onChange}>
+            onClick={handleFlip}>
             <h3>{card.answer}</h3>
           </CardContent>
         </div>

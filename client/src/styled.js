@@ -7,6 +7,7 @@ const COLOURS = {
   GREEN: `#8ac926`,
   YELLOW: `#ffca3a`,
   RED: `#ff595e`,
+  WHTIE: `#ffffff`,
 }
 
 export const AddNewForm = styled.div`
@@ -70,4 +71,18 @@ export const TopicContainer = styled.div`
   margin: 10px;
   padding: 10px;
   border-style: none none dashed none;
+  `;
+  
+  export const CardQuestion = styled.div`
+  background: ${COLOURS.DARK_GREY};
+  color: ${COLOURS.WHTIE};
+  margin: 10px;
+  padding: 10px;
+  `;
+  
+  export const CardAnswer = styled.div`
+  background: ${COLOURS.ORANGE};
+  color: ${COLOURS.DARK_GREY};
+  margin: 10px;
+  padding: 10px;
 `;

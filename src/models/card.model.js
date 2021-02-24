@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-CARDTYPES = [
+const CARDTYPES = [
   'true-false',
   'choice',
   'fill-in',
@@ -9,7 +9,7 @@ CARDTYPES = [
   'simple'
 ];
 
-STATUSTYPES = [
+const STATUSTYPES = [
   'confident',
   'neutral',
   'unsure'

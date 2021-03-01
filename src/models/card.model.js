@@ -1,7 +1,7 @@
 const moment = require('moment');
 const mongoose = require('mongoose');
 
-CARD_TYPES = [
+const CARD_TYPES = [
   'true-false',
   'choice',
   'fill-in',
@@ -10,7 +10,7 @@ CARD_TYPES = [
   'simple'
 ];
 
-STATUS_TYPES = [
+const STATUS_TYPES = [
   'confident',
   'neutral',
   'unsure'

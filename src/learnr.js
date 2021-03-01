@@ -5,13 +5,29 @@ const createError = require('http-errors');
 const mongoose = require('mongoose');
 const apiRoutes = require('./routes');
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 443;
 
 const app = express();
+
+function connect() {
+  mongoose.connect(process.env.MONGO_URL, { keepAlive: 1, useNewUrlParser: true });
+  return mongoose.connection;
+}
+
+function listen() {
+  if (app.get('env') === 'test') return;
+  app.listen(port);
+  console.log(`Server started on port ${port}, press Ctrl-C to terminate...`);
+}
+
 const connection = connect();
 
 app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.json());
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('public'));
+}
 
 app.use('/api', apiRoutes);
 
@@ -30,14 +46,3 @@ connection
   .on('error', console.log)
   .on('disconnected', connect)
   .once('open', listen);
-
-function listen() {
-  if (app.get('env') === 'test') return;
-  app.listen(port);
-  console.log(`Server started on port ${port}, press Ctrl-C to terminate...`);
-}
-
-function connect() {
-  mongoose.connect(process.env.MONGO_URL, { keepAlive: 1, useNewUrlParser: true });
-  return mongoose.connection;
-}

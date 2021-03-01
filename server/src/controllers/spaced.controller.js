@@ -25,14 +25,10 @@ const getNewDate = (status) => {
 
 const updateSpaced = async (body) => {
   /*
-  1. From clicked on status, get nextDateToBeRevised
-  2. Update card
-        - When the user clicks on 'I don't remember this at all', the card moves to needs revision
-        - When the user clicks on 'I barely know this', the card stays in its current box - status stays the same
-        - When the user clicks on 'I'm confident I know this', the card moves down a status that is more confident. to middle box which is neutral
-  3. Update topic
-        - Get the associated topic
-        - If the topic's nextRevisionDate is after the next card revision date, then update the revision date
+  Update card:
+    When the user clicks on 'I don't remember this at all', the card has fewer number of days added
+    When the user clicks on 'I barely know this', the card has neutral number of days added
+    When the user clicks on 'I'm confident I know this', the card has greater number of days added
   */
   
   const card = await Card.findOne({ _id: body._id });
@@ -50,7 +46,7 @@ const updateSpaced = async (body) => {
   })
   
   /*
-  This says:
+  Update topic:
     Find the topic where:
       the id matches the card's topic id AND
       the topic's dateToNextBeRevised is more than the card's dateToNextBeRevised AND

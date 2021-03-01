@@ -1,11 +1,20 @@
 const { checkObjectIdIsValid } = require("../utils/checkObjectIdIsValid");
 const Card = require('../models/card.model');
+const Topic = require('../models/topic.model');
 
 const getCards = async (options = {}) => Card.find(options);
 
 const putCard = async card => {
   checkObjectIdIsValid(card);
-  return new Card(card).save()
+  
+  const newCard = await new Card(card).save();
+  
+  await Topic.updateOne(
+    { _id: card.topicId },
+    { $push: { cards: newCard._id } }
+  );
+
+  return card;
 };
 
 const postCards = async cards => {

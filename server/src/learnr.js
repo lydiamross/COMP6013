@@ -15,11 +15,11 @@ app.use(bodyParser.json());
 
 app.use('/api', apiRoutes);
 
-app.use(function(req, res, next) {
+app.use(function(request, response, next) {
   next(createError(404));
 });
 
-app.use((err, req, res, next) => res.status(500).send(err));
+app.use((error, request, response, next) => response.status(500).send(error));
 
 module.exports = {
   app,

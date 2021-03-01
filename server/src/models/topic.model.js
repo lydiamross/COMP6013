@@ -6,7 +6,8 @@ const topicSchema = mongoose.Schema({
   updatedDate: mongoose.Schema.Types.Date,
   name: mongoose.Schema.Types.String,
   description: mongoose.Schema.Types.String,
-  cards: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Card' }]
+  cards: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Card' }],
+  dateToNextBeRevised: { type: mongoose.Schema.Types.Date, default: Date.now },
 });
 
 const Topic = mongoose.model('Topic', topicSchema);

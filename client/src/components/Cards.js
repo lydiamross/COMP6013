@@ -65,11 +65,10 @@ export const Cards = (props) => {
 
   const handleUpdateCard = (event, page) => {
     event.preventDefault();
-    fetch(`/api/cards`, {
+    fetch(`/api/spaced`, {
       method: 'PATCH',
       body: JSON.stringify({
         _id: paginatedData.currentData()[0]._id,
-        updatedDate: new Date(),
         status: event.target.title,
       }),
       headers: { 'Content-Type': 'application/json' },

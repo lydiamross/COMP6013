@@ -2,6 +2,7 @@ import React, { useState, useEffect, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
 import { AddNewForm, FormInput, Button } from '../styled';
 import { usePagination } from '../utils/usePagination';
 import { usePersistedState } from '../utils/usePersistedState';
@@ -16,6 +17,7 @@ export const Cards = (props) => {
   const [topicName, setTopicName] = usePersistedState('topicName', null);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
   const [redirectMessage, setRedirectMessage] = useState();
+  const [isFilterDisplayed, setFilterDisplayed] = useState(false);
 
   const handleFormDisplay = () => {
     setFormDisplay(!isFormDisplayed);
@@ -32,8 +34,6 @@ export const Cards = (props) => {
         console.error('ERROR:', error);
       });
   }, [props.location.aboutProps, topicPath, topicName, setTopicPath, setTopicName]);
-
-  const paginatedData = usePagination(cards, 1);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -80,6 +80,12 @@ export const Cards = (props) => {
         setRedirectMessage('Error');
       });
   };
+
+  const filteredCards = cards.filter(card => moment(card.dateToNextBeRevised).isBefore(moment()));
+  const filteredPaginatedData = usePagination(filteredCards, 1);
+  const allPaginatedData = usePagination(cards, 1);
+  const paginatedData = isFilterDisplayed ? allPaginatedData : filteredPaginatedData;
+  
   const canViewAssessmentButtons =
     (paginatedData.currentData().length !== 0) && 
     (paginatedData.currentPage <= paginatedData.maxPage);
@@ -88,13 +94,26 @@ export const Cards = (props) => {
     (paginatedData.maxPage !== 0) &&
     (paginatedData.currentPage > paginatedData.maxPage);
 
+  const canViewNoCardsMessage =
+    (paginatedData.currentData().length === 0) &&
+    !canViewSuccessMessage;
+  
   return (
     <div className="cards">
       <h2>{topicName}</h2>
+
       {cards.length !== 0 &&
         paginatedData.currentData().map(card =>
           <Card key={card._id} card={card} />
         )}
+
+      {canViewNoCardsMessage &&
+        <div>
+          <p>There are no cards that need revising at the moment, but you can revise anyway if you like</p>
+          <Button
+            onClick={() => setFilterDisplayed(true)}>Show all cards</Button>
+        </div>}
+
       {canViewAssessmentButtons &&
         <div>
           <Button
@@ -107,11 +126,13 @@ export const Cards = (props) => {
             title="confident"
             onClick={handleUpdateCard}>I'm confident I know this</Button>
         </div>}
+
       {canViewSuccessMessage &&
         <div>
           <div>Well done!</div>
           <p>Please return <Link to="/">Home</Link></p>
         </div>}
+
       <Button
         type="submit"
         onClick={handleFormDisplay}>
@@ -119,6 +140,7 @@ export const Cards = (props) => {
           <span>Add new card <FontAwesomeIcon icon={faPlus} /></span> :
           <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
       </Button>
+
       {isFormDisplayed && <AddNewForm>
         <form onSubmit={handleSubmit}>
           <label htmlFor="question">Question: </label>
@@ -140,7 +162,9 @@ export const Cards = (props) => {
             disabled={!cardQuestion || !cardAnswer}>OK</Button>
         </form>
       </AddNewForm>}
+
       <p>{redirectMessage}</p>
+
     </div>
   )
 };

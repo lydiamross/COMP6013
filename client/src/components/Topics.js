@@ -21,20 +21,12 @@ export const Topics = () => {
   const [isFormDisplayed, setFormDisplay] = useState(false);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const handleFormDisplay = () => setFormDisplay(!isFormDisplayed);
-
   useEffect(() => {
     fetch('/api/topics')
       .then(response => response.json())
       .catch(error => console.error('ERROR:', error))
       .then(setTopics);
   }, []);
-
-  const currentDate = moment();
-  const dateWeekFromNow = currentDate.add(7, 'days')
-  const topicsNow = topics.filter(topic => moment(topic.dateToNextBeRevised).isBefore(currentDate));
-  const topicsThisWeek = topics.filter(topic => moment(topic.dateToNextBeRevised).isBetween(currentDate, dateWeekFromNow));
-  const topicsNextWeek = topics.filter(topic => moment(topic.dateToNextBeRevised).isAfter(dateWeekFromNow));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -55,13 +47,20 @@ export const Topics = () => {
         setFormDisplay(!isFormDisplayed);
         forceUpdate();
       });
-  }
+  };
+
+  const handleFormDisplay = () => setFormDisplay(!isFormDisplayed);
+  const currentDate = moment();
+  const dateWeekFromNow = moment().add(7, 'days');
+  const topicsNow = topics.filter(topic => moment(topic.dateToNextBeRevised).isBefore(currentDate));
+  const topicsThisWeek = topics.filter(topic => moment(topic.dateToNextBeRevised).isBetween(currentDate, dateWeekFromNow));
+  const topicsNextWeek = topics.filter(topic => moment(topic.dateToNextBeRevised).isAfter(dateWeekFromNow));
 
   return (
     <div className="topics">
       <TopicCategory
         topicStatus="now">
-          <h3>These topics need revision now</h3>
+        <h3>These topics need revision now</h3>
         {topicsNow.length !== 0 &&
           topicsNow.map(topic =>
             <Link
@@ -80,7 +79,7 @@ export const Topics = () => {
       </TopicCategory>
       <TopicCategory
         topicStatus="thisWeek">
-          <h3>These topics will need revision this week</h3>
+        <h3>These topics will need revision this week</h3>
         {topicsThisWeek.length !== 0 &&
           topicsThisWeek.map(topic =>
             <Link
@@ -99,7 +98,7 @@ export const Topics = () => {
       </TopicCategory>
       <TopicCategory
         topicStatus="nextWeek">
-          <h3>These topics don't need revising for now</h3>
+        <h3>These topics don't need revising for now</h3>
         {topicsNextWeek.length !== 0 &&
           topicsNextWeek.map(topic =>
             <Link

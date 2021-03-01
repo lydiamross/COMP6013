@@ -1,19 +1,19 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const COLOURS = {
-  WHTIE: `#ffffff`,
+  BLACK: `#000`,
+  WHITE: `#fff`,
   LIGHT_GREY: `#c8c8c8`,
   DARK_GREY: `#484848`,
+  GREEN: `rgb(12, 201, 94)`,
+  YELLOW: `rgb(255,202,58)`,
   ORANGE: `rgb(238, 111, 45)`,
-  PALE_ORANGE: `rgb(238, 111, 45, 0.5)`,
-  GREEN: `#8ac926`,
-  YELLOW: `#ffca3a`,
-  RED: `#ff595e`,
-}
+  ORANGE_PALE: `rgb(238, 111, 45, 0.5)`,
+};
 
 export const AddNewForm = styled.div`
   color: ${COLOURS.DARK_GREY};
-  background: ${COLOURS.PALE_ORANGE};
+  background: ${COLOURS.ORANGE_PALE};
   padding: 10px;
 `;
 
@@ -52,7 +52,7 @@ export const CardContent = styled.div`
     color: ${COLOURS.DARK_GREY};`
     :
     `background: ${COLOURS.DARK_GREY};
-    color: ${COLOURS.WHTIE};`
+    color: ${COLOURS.WHITE};`
     }
 `;
 
@@ -72,7 +72,7 @@ export const Header = styled.header`
 `;
 
 export const Logo = styled.img`
-  width:50px
+  width: 50px;
 `;
 
 export const MenuContainer = styled.nav`
@@ -86,12 +86,34 @@ export const Section = styled.section`
   grid-column: 2;
 `;
 
+export const TopicCategory = styled.div`
+  color: ${COLOURS.BLACK};
+  align-content: center;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 10px;
+
+  a {
+    color: ${COLOURS.BLACK}
+  }
+
+  ${props =>
+    (props.topicStatus === 'now' && `background: ${COLOURS.ORANGE};`) ||
+    (props.topicStatus === 'thisWeek' && `background: ${COLOURS.YELLOW};`) || 
+    (props.topicStatus === 'nextWeek' && `background: ${COLOURS.GREEN};`)
+  }
+`;
+
 export const TopicContainer = styled.div`
-  background: ${COLOURS.LIGHT_GREY};
-  color: ${COLOURS.DARK_GREY};
-  margin: 20px auto;
+  margin: 10px auto;
   padding: 10px;
   width: 40%;
   align-content: center;
   border-radius: 10px;
+  border-color: ${COLOURS.WHITE};
+  border-style: dashed;
+
+  &:hover {
+    color: ${COLOURS.WHITE};
+  }
 `;

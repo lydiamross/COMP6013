@@ -16,14 +16,13 @@ const getNewDate = (status) => {
     case 'neutral':
       return moment().add(spacedInterval.NEUTRAL, 'days');
     case 'confident':
-      // TODO: Check for if last revision was confident
       return moment().add(spacedInterval.CONFIDENT, 'days');
     default:
       return new Date();
   };
 }
 
-const updateSpaced = async (body) => {
+const updateSpacedInterval = async (body) => {
   /*
   Update card:
     When the user clicks on 'I don't remember this at all', the card has fewer number of days added
@@ -49,15 +48,15 @@ const updateSpaced = async (body) => {
   Update topic:
     Find the topic where:
       the id matches the card's topic id AND
-      the topic's dateToNextBeRevised is more than the card's dateToNextBeRevised AND
-      the topic's dateToNextBeRevised is less than today
+      the topic's dateToNextBeRevised is after the card's dateToNextBeRevised OR
+      the topic's dateToNextBeRevised is before today
     Then
       update the revision date
   */
-  
+
   const updatedTopic = await Topic.updateOne({
     _id: card.topicId,
-    $and: [
+    $or: [
       {
         dateToNextBeRevised: {
           $gt: Date(cardNextDate),
@@ -69,7 +68,7 @@ const updateSpaced = async (body) => {
     ]
   }, {
     $set: {
-      dateToNextBeRevised: cardNextDate,
+      dateToNextBeRevised: cardNextDate.toISOString(),
     }
   });
 
@@ -79,7 +78,6 @@ const updateSpaced = async (body) => {
   }
 };
 
-
 module.exports = {
-  updateSpaced: updateSpaced,
+  updateSpacedInterval: updateSpacedInterval,
 };

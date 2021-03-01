@@ -66,7 +66,7 @@ router.delete('/cards/:id', async (request, response) => {
 });
 
 router.patch('/spaced', async (request, response) => {
-  const both = await spacedController.updateSpaced(request.body);
+  const both = await spacedController.updateSpacedInterval(request.body);
   response.json(both);
 });
 

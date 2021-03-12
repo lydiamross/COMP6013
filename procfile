@@ -1,1 +1,1 @@
-web: node src/learnr.js
+web: node server.js

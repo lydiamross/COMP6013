@@ -3,26 +3,33 @@ const Topic = require('../models/topic.model');
 const Card = require('../models/card.model');
 
 const spacedInterval = {
-  UNSURE: 1,
+  NOT_KNOWN: 1,
+  UNSURE: 2,
   NEUTRAL: 5,
   CONFIDENT: 10,
-  RETIRED: 30
+  SUPER_CONFIDENT: 30
 };
 
-const getNewDate = (status) => {
-  switch (status) {
+const getNewDate = (newStatus, previousStatus) => {
+  switch (newStatus) {
     case 'unsure':
+      if (previousStatus === 'unsure') {
+        return moment().add(spacedInterval.NOT_KNOWN, 'days');
+      }
       return moment().add(spacedInterval.UNSURE, 'days');
     case 'neutral':
       return moment().add(spacedInterval.NEUTRAL, 'days');
     case 'confident':
+      if (previousStatus === 'confident') {
+        return moment().add(spacedInterval.SUPER_CONFIDENT, 'days');
+      }
       return moment().add(spacedInterval.CONFIDENT, 'days');
     default:
       return new Date();
   }
 };
 
-const updateSpacedInterval = async (body) => {
+const updateSpacedInterval = async (request, response) => {
   /*
   Update card:
     When the user clicks on 'I don't remember this at all', the card has fewer number of days added
@@ -30,16 +37,16 @@ const updateSpacedInterval = async (body) => {
     When the user clicks on 'I'm confident I know this', the card has greater number of days added
   */
 
-  const card = await Card.findOne({ _id: body._id });
+  const card = await Card.findOne({ _id: request.body._id });
 
-  const cardNextDate = getNewDate(body.status);
+  const cardNextDate = getNewDate(request.body.status, card.status);
 
   const updatedCard = await Card.updateOne({
     _id: card._id
   }, {
     $set: {
       updatedDate: new Date(),
-      status: card.status,
+      status: request.body.status,
       dateToNextBeRevised: cardNextDate,
     }
   });
@@ -71,10 +78,10 @@ const updateSpacedInterval = async (body) => {
     }
   });
 
-  return {
+  return response.status(200).send({
     card: updatedCard,
     topic: updatedTopic
-  };
+  });
 };
 
 module.exports = {

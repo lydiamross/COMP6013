@@ -31,7 +31,7 @@ export const Topics = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     fetch(`/api/topics`, {
-      method: 'PUT',
+      method: 'POST',
       body: JSON.stringify({
         name: topicName,
         description: topicDescription

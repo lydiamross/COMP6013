@@ -38,7 +38,7 @@ export const Cards = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     fetch(`/api/cards`, {
-      method: 'PUT',
+      method: 'POST',
       body: JSON.stringify({
         type: 'simple',
         topicId: topicPath,
@@ -95,9 +95,13 @@ export const Cards = (props) => {
     (paginatedData.currentPage > paginatedData.maxPage);
 
   const canViewNoCardsMessage =
-    (paginatedData.currentData().length === 0) &&
+    (allPaginatedData.currentData().length === 0) &&
     !canViewSuccessMessage;
   
+  const canViewNoFilteredCardsMessage =
+    (paginatedData.currentData().length === 0) &&
+    !canViewSuccessMessage && !canViewNoCardsMessage;
+
   return (
     <div className="cards">
       <h2>{topicName}</h2>
@@ -107,11 +111,16 @@ export const Cards = (props) => {
           <Card key={card._id} card={card} />
         )}
 
-      {canViewNoCardsMessage &&
+      {canViewNoFilteredCardsMessage &&
         <div>
           <p>There are no cards that need revising at the moment, but you can revise anyway if you like</p>
           <Button
             onClick={() => setFilterDisplayed(true)}>Show all cards</Button>
+        </div>}
+
+      {canViewNoCardsMessage &&
+        <div>
+          <p>You don't have any cards yet - please add some!</p>
         </div>}
 
       {canViewAssessmentButtons &&

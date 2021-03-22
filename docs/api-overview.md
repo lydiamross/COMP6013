@@ -4,12 +4,12 @@ The tables below describes the routes that the HTTP interface provides.
 ## Topic model
 Method | Description
 --- | ---
-[GET /topics](./topic.md#) | Gets all the topics
-[GET /topics/:id](./topic.md#) | Gets a single topic by id
-[PUT /topics](./topic.md#) | Creates a single topic
-[POST /topics](./topic.md#) | Creates one or many topics
-[PATCH /topics](./topic.md#) | Updates a topic
-[DELETE /topics/:id](./topic.md#) | Deletes a topic by id
+[GET /topics](./topic.md#get-topics) | Gets all the topics
+[GET /topics/:id](./topic.md#get-topicsid) | Gets a single topic by id
+[PUT /topics](./topic.md#put-topics_id) | Creates a single topic
+[POST /topics](./topic.md#post-topics) | Creates one or many topics
+[PATCH /topics](./topic.md#patch-topics) | Updates a topic
+[DELETE /topics/:id](./topic.md#delete-topics_id) | Deletes a topic by id
 
 ## Card model
 Method | Description

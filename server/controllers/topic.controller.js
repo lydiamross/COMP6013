@@ -46,12 +46,22 @@ const updateTopic = async (request, response) => Topic
       $set: Object.assign(request.body, { updatedDate: new Date() })
     }
   )
-  .then(() => response.status(200).send())
+  .then((res) => {
+    if (res.nModified === 1) {
+      return response.status(200).send({ success: res.nModified });
+    }
+    return response.status(404).send('Error - topic not modified');
+  })
   .catch((error) => response.status(400).send(error));
 
 const deleteTopic = async (request, response) => Topic
   .deleteOne({ _id: request.params.id })
-  .then(() => response.status(204).send())
+  .then((res) => {
+    if (res.deletedCount === 1) {
+      return response.status(204).send(res);
+    }
+    return response.status(404).send('Error - topic not deleted');
+  })
   .catch((error) => response.status(400).send(error));
 
 module.exports = {

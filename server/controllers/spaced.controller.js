@@ -39,17 +39,19 @@ const updateSpacedInterval = async (request, response) => {
 
   const card = await Card.findOne({ _id: request.body._id });
 
+  const currentDate = new Date();
   const cardNextDate = getNewDate(request.body.status, card.status);
 
   const updatedCard = await Card.updateOne({
     _id: card._id
   }, {
     $set: {
-      updatedDate: new Date(),
+      updatedDate: currentDate,
       status: request.body.status,
       dateToNextBeRevised: cardNextDate,
     }
-  });
+  })
+    .catch((error) => response.status(400).send(error));
 
   /*
   Update topic:
@@ -65,16 +67,17 @@ const updateSpacedInterval = async (request, response) => {
     _id: card.topicId,
     $or: [{
       dateToNextBeRevised: {
-        $gt: Date(cardNextDate),
+        $gt: cardNextDate.toDate()
       }
     }, {
       dateToNextBeRevised: {
-        $lt: new Date()
+        $lt: moment(currentDate).toDate()
       }
     }]
   }, {
     $set: {
       dateToNextBeRevised: cardNextDate.toISOString(),
+      updatedDate: currentDate,
     }
   });
 
@@ -85,5 +88,5 @@ const updateSpacedInterval = async (request, response) => {
 };
 
 module.exports = {
-  updateSpacedInterval,
+  updateSpacedInterval
 };

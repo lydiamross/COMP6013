@@ -27,9 +27,13 @@ const putCard = async (request, response) => {
     .catch((error) => response.status(400).send(error));
 
   await Topic.updateOne({
-    _id: newCard.topicId
-  }, {
-    $set: { updatedDate: new Date() },
+    _id: newCard.topicId,
+  },
+  {
+    $set: {
+      updatedDate: new Date(),
+      dateToNextBeRevised: newCard.dateToNextBeRevised
+    },
     $push: { cards: newCard._id }
   });
 };
@@ -40,15 +44,20 @@ const postCards = async (request, response) => {
     checkObjectIdIsValid(card);
     new Card(card)
       .save()
-      .then((newCard) => response.status(201).send(newCard))
-      .catch((error) => response.status(400).send(error));
+      .then(async (newCard) => {
+        await Topic.updateOne({
+          _id: newCard.topicId,
+        },
+        {
+          $set: {
+            updatedDate: new Date(),
+            dateToNextBeRevised: newCard.dateToNextBeRevised
+          },
+          $push: { cards: card._id }
+        });
 
-    Topic.updateOne({
-      _id: card.topicId
-    }, {
-      $set: { updatedDate: new Date() },
-      $push: { cards: card._id }
-    })
+        return response.status(201).send(newCard);
+      })
       .catch((error) => response.status(400).send(error));
   });
 };
@@ -61,12 +70,22 @@ const updateCard = async (request, response) => Card
       $set: Object.assign(request.body, { updatedDate: new Date() })
     }
   )
-  .then(() => response.status(200).send())
+  .then((res) => {
+    if (res.nModified === 1) {
+      return response.status(200).send({ success: res.nModified });
+    }
+    return response.status(404).send('Error - card not modified');
+  })
   .catch((error) => response.status(400).send(error));
 
 const deleteCard = async (request, response) => Card
   .deleteOne({ _id: request.params.id })
-  .then(() => response.status(204).send())
+  .then((res) => {
+    if (res.deletedCount === 1) {
+      return response.status(204).send({ success: res.deletedCount });
+    }
+    return response.status(404).send('Error - card not deleted');
+  })
   .catch((error) => response.status(400).send(error));
 
 module.exports = {

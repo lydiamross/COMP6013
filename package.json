@@ -13,6 +13,7 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
     "eslint": "^7.17.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
@@ -26,7 +27,7 @@
     "portfinder": "^1.0.28"
   },
   "scripts": {
-    "test": "jest src",
+    "test": "jest",
     "lint": "eslint",
     "start": "node server.js"
   },

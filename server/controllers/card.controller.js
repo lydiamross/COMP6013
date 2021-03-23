@@ -1,4 +1,3 @@
-const { checkObjectIdIsValid } = require('../utils/checkObjectIdIsValid');
 const Card = require('../models/card.model');
 const Topic = require('../models/topic.model');
 
@@ -13,8 +12,6 @@ const getCardsByTopicId = async (request, response) => Card
   .catch((error) => response.status(400).send(error));
 
 const putCard = async (request, response) => {
-  checkObjectIdIsValid({ _id: request.params.id });
-
   const newCard = await Card.findOneAndUpdate({
     _id: request.params.id
   }, {
@@ -41,7 +38,6 @@ const putCard = async (request, response) => {
 const postCards = async (request, response) => {
   const newCards = Array.isArray(request.body) ? request.body : [request.body];
   newCards.forEach((card) => {
-    checkObjectIdIsValid(card);
     new Card(card)
       .save()
       .then(async (newCard) => {

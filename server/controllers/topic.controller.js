@@ -1,5 +1,4 @@
 /* eslint-disable consistent-return */
-const { checkObjectIdIsValid } = require('../utils/checkObjectIdIsValid');
 const Topic = require('../models/topic.model');
 
 const getTopics = async (request, response) => Topic
@@ -13,8 +12,6 @@ const getTopicById = async (request, response) => Topic
   .catch((error) => response.status(400).send(error));
 
 const putTopic = async (request, response) => {
-  checkObjectIdIsValid({ _id: request.params.id });
-
   await Topic.findOneAndUpdate({
     _id: request.params.id
   }, {
@@ -29,13 +26,10 @@ const putTopic = async (request, response) => {
 
 const postTopics = async (request, response) => {
   const newTopics = Array.isArray(request.body) ? request.body : [request.body];
-  newTopics.forEach((topic) => {
-    checkObjectIdIsValid(topic);
-    return new Topic(topic)
-      .save()
-      .then((createdTopic) => response.status(201).send(createdTopic))
-      .catch((error) => response.status(400).send(error));
-  });
+  newTopics.forEach((topic) => new Topic(topic)
+    .save()
+    .then((createdTopic) => response.status(201).send(createdTopic))
+    .catch((error) => response.status(400).send(error)));
 };
 
 const updateTopic = async (request, response) => Topic

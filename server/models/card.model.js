@@ -17,7 +17,6 @@ const STATUS_TYPES = [
 ];
 
 const cardSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId, // 24-character hexadecimal string
   createdDate: { type: mongoose.Schema.Types.Date, default: Date.now },
   updatedDate: mongoose.Schema.Types.Date,
   type: { type: mongoose.Schema.Types.String, enum: CARD_TYPES, default: 'simple' },

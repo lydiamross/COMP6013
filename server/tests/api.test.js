@@ -1,161 +1,355 @@
-const nodeFetch = require('node-fetch');
+const bodyParser = require('body-parser');
+const express = require('express');
+const mongoose = require('mongoose');
+const request = require('supertest');
+const CardModel = require('../models/card.model');
+const TopicModel = require('../models/topic.model');
+const apiRoutes = require('../routes');
 
-const fetch = async (method, path, body) => {
-  const response = await nodeFetch(
-    `${process.env.BASE_URL}:${process.env.API_PORT}${path}`,
-    {
-      method,
-      body: typeof body === 'string' ? body : JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json'
+describe('REST API models test', () => {
+  const testApp = express();
+  testApp.use(bodyParser.json({ limit: '100kb' }));
+  testApp.use('/api', apiRoutes);
+  const api = () => request(testApp);
+
+  const exampleTopic = { name: 'Example topic name', description: 'Example topic description' };
+  const exampleCard = { question: 'Example question', answer: 'Example answer' };
+
+  beforeAll(async () => {
+    await mongoose.connect(
+      'mongodb://127.0.0.1/test',
+      { useNewUrlParser: true, useCreateIndex: true },
+      (err) => {
+        if (err) {
+          console.error(err);
+          process.exit(1);
+        }
       }
-    }
-  );
-  if (response.status < 200 || response.status > 299) throw new Error(`API returned status ${response.status}`);
-  return response.json();
-};
-
-describe('API tests on GET method', () => {
-  test('GET /api/cards', async () => {
-    const cards = await fetch('get', '/api/cards');
-    expect(cards.length).not.toBe(0);
-    const firstCard = cards[0];
-    expect(firstCard.question).toMatch(/\w/);
-    expect(typeof firstCard.type).toBe('string');
+    );
   });
 
-  test('GET /api/cards/:_id', async () => {
-    const cards = await fetch('get', '/api/cards');
-    expect(cards.length).not.toBe(0);
-    const firstCard = cards[0];
-    const card = await fetch('get', `/api/cards/${firstCard._id}`);
-    expect(card.question).toBe(firstCard.question);
+  afterAll(async (done) => {
+    await mongoose.disconnect();
+    done();
   });
 
-  test('GET /api/topics', async () => {
-    const topics = await fetch('get', '/api/topics');
-    expect(topics.length).not.toBe(0);
-    const firstTopic = topics[0];
-    expect(firstTopic.name).toMatch(/\w/);
-    expect(typeof firstTopic.cards).toBe('array');
+  afterEach(async (done) => {
+    await TopicModel.deleteMany({});
+    await CardModel.deleteMany({});
+    done();
   });
 
-  test('GET /api/topics/:_id', async () => {
-    const topics = await fetch('get', '/api/topics');
-    expect(topics.length).not.toBe(0);
-    const firstTopic = topics[0];
-    const topic = await fetch('get', `/api/topics/${firstTopic._id}`);
-    expect(topic.name).toBe(firstTopic.name);
+  describe('Topic model', () => {
+    it('should get a list of topics via GET /topics', async () => {
+      await api()
+        .post('/api/topics')
+        .send(exampleTopic);
+
+      const response = await api()
+        .get('/api/topics')
+        .expect(200);
+
+      expect(response.body.length).not.toBe(0);
+      expect(response.body[0].name).toBe(exampleTopic.name);
+      expect(response.body[0].description).toBe(exampleTopic.description);
+      expect(response.body[0]._id).toBeDefined();
+    });
+
+    it('should get a specific topic via GET /topics/:id', async () => {
+      const newTopic = await api()
+        .post('/api/topics')
+        .send(exampleTopic);
+
+      const response = await api()
+        .get(`/api/topics/${newTopic.body._id}`)
+        .expect(200);
+
+      expect(response.body.name).toBe(exampleTopic.name);
+      expect(response.body.description).toBe(exampleTopic.description);
+      expect(response.body._id).toBeDefined();
+    });
+
+    it('should create a topic via PUT /topics/:id', async () => {
+      const _id = 'a266488f577495b2805bf474';
+      await api()
+        .put(`/api/topics/${_id}`)
+        .send(exampleTopic)
+        .expect(200);
+    });
+
+    it('should not create a new topic via PUT /topics/:id when id already exists', async () => {
+      const _id = 'a266488f577495b2805bf474';
+      const newTopicBody = { name: 'A different topic name' };
+
+      await api()
+        .put(`/api/topics/${_id}`)
+        .send(exampleTopic)
+        .expect(200);
+
+      await api()
+        .put(`/api/topics/${_id}`)
+        .send(newTopicBody)
+        .expect(200);
+
+      const topic = await api()
+        .get('/api/topics')
+        .expect(200);
+
+      expect(topic.body[0].name).toBe(newTopicBody.name);
+      expect(topic.body[0].description).toBe(exampleTopic.description);
+    });
+
+    it('should create a topic via POST /topics', async () => {
+      const response = await api()
+        .post('/api/topics')
+        .send(exampleTopic)
+        .expect(201);
+
+      expect(response.body.name).toBe(exampleTopic.name);
+      expect(response.body.description).toBe(exampleTopic.description);
+      expect(response.body._id).toBeDefined();
+    });
+
+    it('should not create a new invalid topic via POST /topics', async () => {
+      try {
+        await api()
+          .post('/api/topics')
+          .send({ description: 'A test description' });
+      } catch (error) {
+        expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
+      }
+    });
+
+    it('should update a topic via PATCH /topics', async () => {
+      const _id = 'a266488f577495b2805bf474';
+      await api()
+        .post('/api/topics')
+        .send(Object.assign(exampleTopic, { _id }))
+        .expect(201);
+
+      const update = {
+        _id,
+        description: 'Updated test description',
+      };
+
+      const response = await api()
+        .patch('/api/topics')
+        .send(update)
+        .expect(200);
+
+      expect(response.body.success).toEqual(1);
+    });
+
+    it('should not update a topic via PATCH /topics without specificed id', async () => {
+      await api()
+        .post('/api/topics')
+        .send(exampleTopic);
+
+      const update = {
+        incorrectField: 'Updated field'
+      };
+
+      try {
+        await api()
+          .patch('/api/topics')
+          .send(update);
+      } catch (error) {
+        expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
+      }
+    });
+
+    it('should not update a topic via PATCH /topics with invalid body', async () => {
+      const _id = 'a266488f577495b2805bf474';
+      await api()
+        .post('/api/topics')
+        .send(Object.assign(exampleTopic, { _id }))
+        .expect(201);
+
+      const update = {
+        _id,
+        incorrectField: 'Updated field',
+      };
+
+      try {
+        await api()
+          .patch('/api/topics')
+          .send(update);
+      } catch (error) {
+        expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
+      }
+    });
+
+    it('should delete a specific topic via DELETE /topics/:id', async () => {
+      const _id = 'a266488f577495b2805bf474';
+      await api()
+        .post('/api/topics')
+        .send(Object.assign(exampleTopic, { _id }))
+        .expect(201);
+
+      await api()
+        .delete(`/api/topics/${_id}`)
+        .expect(204);
+    });
   });
-});
 
-describe('API tests on POST method', () => {
-  test('POST /api/cards', async () => {
-    const sampleCardBody = [{ // TODO: Switch to JSON.stringify
-      "_id": "e0dbdd80d092359d6c553cba",
-      "createdDate": "2021-02-01T12:01:00.000Z",
-      "type": "simple",
-      "topicId": "e964314a0d72beb0b1e37aea",
-      "question": "Example test question",
-      "answer": "Example test answer",
-    }];
-    const postResponse = await fetch('post', '/api/cards', sampleCardBody);
-    const card = await fetch('get', '/api/cards/e0dbdd80d092359d6c553cba');
+  describe('Card model', () => {
+    it('should get a list of cards via GET /cards', async () => {
+      await api()
+        .post('/api/cards')
+        .send(exampleCard);
 
-    expect(postResponse._id).toEqual(card._id);
-    expect(postResponse.question).toEqual(card.question);
+      const response = await api()
+        .get('/api/cards')
+        .expect(200);
+
+      expect(response.body.length).not.toBe(0);
+      expect(response.body[0].question).toBe(exampleCard.question);
+      expect(response.body[0].answer).toBe(exampleCard.answer);
+      expect(response.body[0].type).toBe('simple');
+      expect(response.body[0]._id).toBeDefined();
+    });
+
+    it('should get a list of cards with a specified topic via GET /cards/:id', async () => {
+      const topicId = 'a266488f577495b2805bf473';
+      await api()
+        .post('/api/cards/')
+        .send(Object.assign(exampleCard, { topicId }))
+        .expect(201);
+
+      const response = await api()
+        .get(`/api/cards/${topicId}`)
+        .expect(200);
+
+      expect(response.body[0].question).toBe(exampleCard.question);
+      expect(response.body[0].answer).toBe(exampleCard.answer);
+      expect(response.body[0].topicId).toEqual(topicId);
+    });
+
+    it('should create a card via PUT /cards/:id', async () => {
+      const _id = 'a266488f577495b2805bf475';
+      await api()
+        .put(`/api/cards/${_id}`)
+        .send(exampleCard)
+        .expect(200);
+    });
+
+    it('should not create a new card via PUT /cards/:id when id already exists', async () => {
+      const _id = 'a266488f577495b2805bf475';
+      const newCardBody = { answer: 'A different answer' };
+
+      await api()
+        .put(`/api/cards/${_id}`)
+        .send(exampleCard)
+        .expect(200);
+
+      await api()
+        .put(`/api/cards/${_id}`)
+        .send(newCardBody)
+        .expect(200);
+
+      const card = await api()
+        .get('/api/cards')
+        .expect(200);
+
+      expect(card.body[0].name).toBe(newCardBody.name);
+      expect(card.body[0].description).toBe(exampleCard.description);
+    });
+
+    it('should create a card via POST /cards', async () => {
+      const response = await api()
+        .post('/api/cards')
+        .send(exampleCard)
+        .expect(201);
+
+      expect(response.body.question).toBe(exampleCard.question);
+      expect(response.body.answer).toBe(exampleCard.answer);
+      expect(response.body._id).toBeDefined();
+    });
+
+    it('should not create a new invalid card via POST /cards', async () => {
+      try {
+        await api()
+          .post('/api/cards')
+          .send({ question: 'A test question' });
+      } catch (error) {
+        expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
+      }
+    });
+
+    it('should update a card via PATCH /cards', async () => {
+      const _id = 'a266488f577495b2805bf475';
+      await api()
+        .post('/api/cards')
+        .send(Object.assign(exampleCard, { _id }))
+        .expect(201);
+
+      const update = {
+        _id,
+        answer: 'Updated test answer',
+      };
+
+      const response = await api()
+        .patch('/api/cards')
+        .send(update)
+        .expect(200);
+
+      expect(response.body.success).toEqual(1);
+    });
+
+    it('should not update a card via PATCH /cards without specificed id', async () => {
+      await api()
+        .post('/api/cards')
+        .send(exampleCard);
+
+      const update = {
+        incorrectField: 'Updated field'
+      };
+
+      try {
+        await api()
+          .patch('/api/cards')
+          .send(update);
+      } catch (error) {
+        expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
+      }
+    });
+
+    it('should not update a card via PATCH /cards with invalid body', async () => {
+      const _id = 'a266488f577495b2805bf475';
+      await api()
+        .post('/api/cards')
+        .send(Object.assign(exampleCard, { _id }));
+
+      const update = {
+        _id,
+        incorrectField: 'Updated field'
+      };
+
+      try {
+        await api()
+          .patch('/api/cards')
+          .send(update);
+      } catch (error) {
+        expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
+      }
+    });
+
+    it('should delete a specific card via DELETE /cards/:id', async () => {
+      const _id = 'a266488f577495b2805bf475';
+      await api()
+        .post('/api/cards')
+        .send(Object.assign(exampleCard, { _id }))
+        .expect(201);
+
+      await api()
+        .delete(`/api/cards/${_id}`)
+        .expect(204);
+    });
   });
 
-  test('POST /api/topics', async () => {
-    const sampleCardBody = [{
-      "_id": "aeb2ba54d1c19295fbce87ed",
-      "name": 'Example test name',
-      "description": 'Example test description',
-      "cards": ['e0dbdd80d092359d6c553cba']
-    }];
-    const postResponse = await fetch('post', '/api/topics', sampleCardBody);
-    const topic = await fetch('get', '/api/topics/aeb2ba54d1c19295fbce87ed');
-
-    expect(postResponse._id).toEqual(topic._id);
-    expect(postResponse.name).toEqual(topic.name);
-    expect(typeof postResponse.cards).toBe('array');
-  });
-});
-
-describe('API tests on PUT method', () => {
-  test('PUT /api/cards', async () => {
-    const sampleCardBody = {
-      "_id": "cb97fbe70eab4ef2694ec5ff",
-      "topicId": "e964314a0d72beb0b1e37aea",
-      "question": "Example test question",
-      "answer": "Example test answer",
-    };
-    const putResponse = await fetch('put', '/api/cards', sampleCardBody);
-    const card = await fetch('get', '/api/cards/cb97fbe70eab4ef2694ec5ff');
-
-    expect(putResponse._id).toEqual(card._id);
-    expect(putResponse.question).toEqual(card.question);
-  });
-
-  test('PUT /api/topics', async () => {
-    const sampleCardBody = [{
-      "_id": "a266488f577495b2805bf474",
-      "name": 'Example test name',
-      "description": 'Example test description',
-      "cards": ['e0dbdd80d092359d6c553cba']
-    }];
-    const postResponse = await fetch('post', '/api/topics', sampleCardBody);
-    const topic = await fetch('get', '/api/topics/a266488f577495b2805bf474');
-
-    expect(postResponse._id).toEqual(topic._id);
-    expect(postResponse.name).toEqual(topic.name);
-    expect(typeof postResponse.cards).toBe('array');
-  });
-});
-
-describe('API tests on DELETE method', () => {
-  test('DELETE /api/cards/:_id', async () => {
-    const cards = await fetch('get', '/api/cards');
-    expect(cards.length).not.toBe(0);
-    const firstCard = cards[0];
-    const response = await fetch('delete', `/api/cards/${firstCard._id}`);
-    expect(response.deletedCount).toBe(1);
-    expect(response.ok).toBe(1);
-  });
-
-  test('DELETE /api/topics/:_id', async () => {
-    const topics = await fetch('get', '/api/topics');
-    expect(topics.length).not.toBe(0);
-    const firstTopic = topics[0];
-    const response = await fetch('delete', `/api/topics/${firstTopic._id}`);
-    expect(response.deletedCount).toBe(1);
-    expect(response.ok).toBe(1);
-  });
-});
-
-describe('API tests on PATCH method', () => {
-  test('PATCH /api/cards', async () => {
-    const sampleCardUpdate = {
-      "_id": "cb97fbe70eab4ef2694ec5ff",
-      "status": "neutral",
-    };
-    const patchResponse = await fetch('patch', '/api/cards', sampleCardUpdate);
-    const card = await fetch('get', '/api/cards/cb97fbe70eab4ef2694ec5ff');
-
-    expect(patchResponse._id).toEqual(card._id);
-    expect(patchResponse.status).toEqual(card.status);
-  });
-
-  test('PATCH /api/topics', async () => {
-    const sampleTopicUpdate = [{
-      "_id": "a266488f577495b2805bf474",
-      "description": 'Updated test description',
-    }];
-    const postResponse = await fetch('patch', '/api/topics', sampleTopicUpdate);
-    const topic = await fetch('get', '/api/topics/a266488f577495b2805bf474');
-
-    expect(postResponse._id).toEqual(topic._id);
-    expect(postResponse.description).toEqual(topic.description);
-    expect(typeof postResponse.cards).toBe('array');
+  describe('Spaced repetition', () => {
+    it('should...', async () => {
+      /** */
+    });
   });
 });

@@ -52,7 +52,7 @@ const deleteTopic = async (request, response) => Topic
   .deleteOne({ _id: request.params.id })
   .then((res) => {
     if (res.deletedCount === 1) {
-      return response.status(204).send(res);
+      return response.status(204).send();
     }
     return response.status(404).send('Error - topic not deleted');
   })

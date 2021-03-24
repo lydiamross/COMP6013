@@ -78,7 +78,7 @@ const deleteCard = async (request, response) => Card
   .deleteOne({ _id: request.params.id })
   .then((res) => {
     if (res.deletedCount === 1) {
-      return response.status(204).send({ success: res.deletedCount });
+      return response.status(204).send();
     }
     return response.status(404).send('Error - card not deleted');
   })

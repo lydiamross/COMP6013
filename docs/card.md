@@ -200,8 +200,4 @@ DELETE https://comp6013-17030104.herokuapp.com/api/cards/8471c20a803ae2675471941
 ```
 HTTP/1.1 204 No Content
 Content-Type: application/json; charset=utf-8
-
-{
-  "success": 1
-}
 ```

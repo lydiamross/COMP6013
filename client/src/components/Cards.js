@@ -40,7 +40,6 @@ export const Cards = (props) => {
     fetch(`/api/cards`, {
       method: 'POST',
       body: JSON.stringify({
-        type: 'simple',
         topicId: topicPath,
         question: cardQuestion,
         answer: cardAnswer

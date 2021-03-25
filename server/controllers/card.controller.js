@@ -49,7 +49,7 @@ const postCards = async (request, response) => {
             updatedDate: new Date(),
             dateToNextBeRevised: newCard.dateToNextBeRevised
           },
-          $push: { cards: card._id }
+          $push: { cards: newCard._id }
         });
 
         return response.status(201).send(newCard);

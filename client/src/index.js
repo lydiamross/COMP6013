@@ -12,7 +12,7 @@ import { Topics } from './components/Topics.js';
 import { About } from './components/About';
 import { NotFound } from './components/NotFound';
 import { Menu } from './components/Menu';
-import { AppContainer, Logo, Header, Section } from './styled';
+import { AppContainer, Logo, Header, Main } from './styled';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -22,14 +22,14 @@ ReactDOM.render(
           <Link to="/"><Logo src={logo} alt="Logo" /></Link>
         </Header>
         <Menu />
-        <Section>
+        <Main>
           <Switch>
             <Route path="/" exact component={Topics} />
             <Route path="/about" exact component={About} />
             <Route path="/cards" exact component={Cards} />
             <Route component={NotFound} />
           </Switch>
-        </Section>
+        </Main>
       </Router>
     </AppContainer>
   </React.StrictMode>,

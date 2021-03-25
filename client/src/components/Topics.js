@@ -57,7 +57,7 @@ export const Topics = () => {
   const topicsNextWeek = topics.filter(topic => moment(topic.dateToNextBeRevised).isAfter(dateWeekFromNow));
 
   return (
-    <div className="topics">
+    <section className="topics">
       <TopicCategory
         topicStatus="now">
         <h3>These topics need revision now</h3>
@@ -117,10 +117,11 @@ export const Topics = () => {
       </TopicCategory>
       <Button
         type="submit"
+        aria-hidden="false"
         onClick={handleFormDisplay}>
         {!isFormDisplayed ?
-          <span>Add new topic <FontAwesomeIcon icon={faPlus} /></span> :
-          <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
+          <span>Add new topic <FontAwesomeIcon icon={faPlus} aria-hidden="true"/></span> :
+          <span>Hide <FontAwesomeIcon icon={faMinus} aria-hidden="true"/></span>}
       </Button>
       {isFormDisplayed && <AddNewForm>
         <form onSubmit={handleSubmit}>
@@ -143,6 +144,6 @@ export const Topics = () => {
             disabled={!topicName}>OK</Button>
         </form>
       </AddNewForm>}
-    </div>
+    </section>
   );
 };

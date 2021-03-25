@@ -11,7 +11,7 @@ const COLOURS = {
   ORANGE_PALE: `rgb(238, 111, 45, 0.5)`,
 };
 
-export const AddNewForm = styled.div`
+export const AddNewForm = styled.form`
   color: ${COLOURS.DARK_GREY};
   background: ${COLOURS.ORANGE_PALE};
   padding: 10px;
@@ -81,7 +81,7 @@ export const MenuContainer = styled.nav`
   grid-column: 1;
 `;
 
-export const Section = styled.section`
+export const Main = styled.main`
   grid-row: 2;
   grid-column: 2;
 `;

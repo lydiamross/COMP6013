@@ -1,4 +1,6 @@
 .env
 .DS_Store
+globalConfig.json
 /node_modules
 /client/node_modules
+/client/.eslintcache

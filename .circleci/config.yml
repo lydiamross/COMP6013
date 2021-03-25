@@ -29,5 +29,5 @@ jobs:
 workflows:
   app-tests:
     jobs:
-      - run_tests
+      # - run_tests
       - run_lint

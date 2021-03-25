@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 const Topic = require('../models/topic.model');
 
 const getTopics = async (request, response) => Topic

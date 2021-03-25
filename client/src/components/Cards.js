@@ -102,7 +102,7 @@ export const Cards = (props) => {
     !canViewSuccessMessage && !canViewNoCardsMessage;
 
   return (
-    <div className="cards">
+    <section className="cards">
       <h2>{topicName}</h2>
 
       {cards.length !== 0 &&
@@ -145,12 +145,12 @@ export const Cards = (props) => {
         type="submit"
         onClick={handleFormDisplay}>
         {!isFormDisplayed ?
-          <span>Add new card <FontAwesomeIcon icon={faPlus} /></span> :
-          <span>Hide <FontAwesomeIcon icon={faMinus} /></span>}
+          <span>Add new card <FontAwesomeIcon icon={faPlus} aria-hidden="true"/></span> :
+          <span>Hide <FontAwesomeIcon icon={faMinus} aria-hidden="true"/></span>}
       </Button>
 
-      {isFormDisplayed && <AddNewForm>
-        <form onSubmit={handleSubmit}>
+      {isFormDisplayed && <AddNewForm
+        onSubmit={handleSubmit}>
           <label htmlFor="question">Question: </label>
           <FormInput
             type="text"
@@ -168,11 +168,10 @@ export const Cards = (props) => {
           <Button
             type="submit"
             disabled={!cardQuestion || !cardAnswer}>OK</Button>
-        </form>
-      </AddNewForm>}
+        </AddNewForm>}
 
       <p>{redirectMessage}</p>
 
-    </div>
+    </section>
   )
 };

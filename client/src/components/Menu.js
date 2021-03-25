@@ -12,8 +12,10 @@ export const Menu = () => {
   }
 
   return (
-    <MenuContainer>
+    <MenuContainer
+      aria-label="Go to main navigation">
       <FontAwesomeIcon
+        aria-hidden="true"
         onClick={onToggleChange}
         icon={faBars}
         size="2x" />

@@ -5,7 +5,7 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 import { AddNewForm, FormInput, Button, TopicContainer, TopicCategory } from '../styled';
 
-const Topic = ({ topic }) => {
+export const Topic = ({ topic }) => {
   return (
     <TopicContainer key={topic._id}>
       <h4>{topic.name}</h4>
@@ -123,8 +123,8 @@ export const Topics = () => {
           <span>Add new topic <FontAwesomeIcon icon={faPlus} aria-hidden="true"/></span> :
           <span>Hide <FontAwesomeIcon icon={faMinus} aria-hidden="true"/></span>}
       </Button>
-      {isFormDisplayed && <AddNewForm>
-        <form onSubmit={handleSubmit}>
+      {isFormDisplayed && <AddNewForm
+        onSubmit={handleSubmit}>
           <label htmlFor="name">Topic name: </label>
           <FormInput
             type="text"
@@ -142,7 +142,6 @@ export const Topics = () => {
           <Button
             type="submit"
             disabled={!topicName}>OK</Button>
-        </form>
       </AddNewForm>}
     </section>
   );

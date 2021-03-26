@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
+const moment = require('moment');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const CardModel = require('../models/card.model');
@@ -18,7 +19,12 @@ describe('REST API models test', () => {
   beforeAll(async () => {
     await mongoose.connect(
       'mongodb://127.0.0.1/test',
-      { useNewUrlParser: true, useCreateIndex: true },
+      {
+        useNewUrlParser: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false
+      },
       (err) => {
         if (err) {
           console.error(err);
@@ -348,8 +354,184 @@ describe('REST API models test', () => {
   });
 
   describe('Spaced repetition', () => {
-    it('should...', async () => {
-      /** */
+    it('should repeat card with sequential unsures daily', async () => {
+      const cardId = 'a266488f577495b2805bf475';
+      const topicId = 'a266488f577495b2805bf474';
+
+      await api()
+        .post('/api/topics')
+        .send(Object.assign(exampleTopic, {
+          _id: topicId,
+        }))
+        .expect(201);
+      const card = await api()
+        .post('/api/cards')
+        .send(Object.assign(exampleCard, {
+          _id: cardId,
+          status: 'unsure',
+          topicId,
+          dateToNextBeRevised: moment()
+        }))
+        .expect(201);
+      const response = await api()
+        .patch('/api/spaced')
+        .send({
+          _id: card.body._id,
+          status: 'unsure'
+        })
+        .expect(200);
+      const updatedTopic = await api()
+        .get(`/api/topics/${topicId}`);
+      const updatedCard = await api()
+        .get('/api/cards');
+
+      expect(response.body.card.nModified).toBe(1);
+      expect(moment(card.body.dateToNextBeRevised).diff(updatedCard.body[0].dateToNextBeRevised, 'days')).toBe(-1);
+      expect(moment(updatedCard.body[0]).diff(updatedTopic.body, 'days')).toBe(0);
+    });
+
+    it('should repeat card with neutral then unsure every two days', async () => {
+      const cardId = 'a266488f577495b2805bf475';
+      const topicId = 'a266488f577495b2805bf474';
+
+      await api()
+        .post('/api/topics')
+        .send(Object.assign(exampleTopic, {
+          _id: topicId,
+        }))
+        .expect(201);
+      const card = await api()
+        .post('/api/cards')
+        .send(Object.assign(exampleCard, {
+          _id: cardId,
+          status: 'neutral',
+          topicId,
+          dateToNextBeRevised: moment()
+        }))
+        .expect(201);
+      const response = await api()
+        .patch('/api/spaced')
+        .send({
+          _id: card.body._id,
+          status: 'unsure'
+        })
+        .expect(200);
+      const updatedTopic = await api()
+        .get(`/api/topics/${topicId}`);
+      const updatedCard = await api()
+        .get('/api/cards');
+
+      expect(response.body.card.nModified).toBe(1);
+      expect(moment(card.body.dateToNextBeRevised).diff(updatedCard.body[0].dateToNextBeRevised, 'days')).toBe(-2);
+      expect(moment(updatedCard.body[0]).diff(updatedTopic.body, 'days')).toBe(0);
+    });
+
+    it('should repeat card with unsure then neutral every five days', async () => {
+      const cardId = 'a266488f577495b2805bf475';
+      const topicId = 'a266488f577495b2805bf474';
+
+      await api()
+        .post('/api/topics')
+        .send(Object.assign(exampleTopic, {
+          _id: topicId,
+        }))
+        .expect(201);
+      const card = await api()
+        .post('/api/cards')
+        .send(Object.assign(exampleCard, {
+          _id: cardId,
+          status: 'unsure',
+          topicId,
+          dateToNextBeRevised: moment()
+        }))
+        .expect(201);
+      const response = await api()
+        .patch('/api/spaced')
+        .send({
+          _id: card.body._id,
+          status: 'neutral'
+        })
+        .expect(200);
+      const updatedTopic = await api()
+        .get(`/api/topics/${topicId}`);
+      const updatedCard = await api()
+        .get('/api/cards');
+
+      expect(response.body.card.nModified).toBe(1);
+      expect(moment(card.body.dateToNextBeRevised).diff(updatedCard.body[0].dateToNextBeRevised, 'days')).toBe(-5);
+      expect(moment(updatedCard.body[0]).diff(updatedTopic.body, 'days')).toBe(0);
+    });
+
+    it('should repeat card with neutral then confident every ten days', async () => {
+      const cardId = 'a266488f577495b2805bf475';
+      const topicId = 'a266488f577495b2805bf474';
+
+      await api()
+        .post('/api/topics')
+        .send(Object.assign(exampleTopic, {
+          _id: topicId,
+        }))
+        .expect(201);
+      const card = await api()
+        .post('/api/cards')
+        .send(Object.assign(exampleCard, {
+          _id: cardId,
+          status: 'neutral',
+          topicId,
+          dateToNextBeRevised: moment()
+        }))
+        .expect(201);
+      const response = await api()
+        .patch('/api/spaced')
+        .send({
+          _id: card.body._id,
+          status: 'confident'
+        })
+        .expect(200);
+      const updatedTopic = await api()
+        .get(`/api/topics/${topicId}`);
+      const updatedCard = await api()
+        .get('/api/cards');
+
+      expect(response.body.card.nModified).toBe(1);
+      expect(moment(card.body.dateToNextBeRevised).diff(updatedCard.body[0].dateToNextBeRevised, 'days')).toBe(-10);
+      expect(moment(updatedCard.body[0]).diff(updatedTopic.body, 'days')).toBe(0);
+    });
+
+    it('should repeat card with confident then confident every thirty days', async () => {
+      const cardId = 'a266488f577495b2805bf475';
+      const topicId = 'a266488f577495b2805bf474';
+
+      await api()
+        .post('/api/topics')
+        .send(Object.assign(exampleTopic, {
+          _id: topicId,
+        }))
+        .expect(201);
+      const card = await api()
+        .post('/api/cards')
+        .send(Object.assign(exampleCard, {
+          _id: cardId,
+          status: 'confident',
+          topicId,
+          dateToNextBeRevised: moment()
+        }))
+        .expect(201);
+      const response = await api()
+        .patch('/api/spaced')
+        .send({
+          _id: card.body._id,
+          status: 'confident'
+        })
+        .expect(200);
+      const updatedTopic = await api()
+        .get(`/api/topics/${topicId}`);
+      const updatedCard = await api()
+        .get('/api/cards');
+
+      expect(response.body.card.nModified).toBe(1);
+      expect(moment(card.body.dateToNextBeRevised).diff(updatedCard.body[0].dateToNextBeRevised, 'days')).toBe(-30);
+      expect(moment(updatedCard.body[0]).diff(updatedTopic.body, 'days')).toBe(0);
     });
   });
 });

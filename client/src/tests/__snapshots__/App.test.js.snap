@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UI display should display About page 1`] = `
+<section>
+  <h2>
+    About
+  </h2>
+  <p>
+    This interface will help you efficiently revise flashcards
+  </p>
+  <p>
+    Make a habit of coming back each day to revise the topics needing revision.
+  </p>
+  <p>
+    If you wish to use the REST API (for example to edit or delete a card or topic), please see the 
+    <a
+      href="https://github.com/lydiamross/COMP6013"
+    >
+      documentation in the GitHub repository
+    </a>
+  </p>
+</section>
+`;
+
+exports[`UI display should display Cards page 1`] = `
+<section
+  className="cards"
+>
+  <h2 />
+  <div>
+    <p>
+      You don't have any cards yet - please add some!
+    </p>
+  </div>
+  <button
+    className="sc-dlfnbm dMjXtw"
+    onClick={[Function]}
+    type="submit"
+  >
+    <span>
+      Add new card 
+      <svg
+        aria-hidden="true"
+        className="svg-inline--fa fa-plus fa-w-14 "
+        data-icon="plus"
+        data-prefix="fas"
+        focusable="false"
+        role="img"
+        style={Object {}}
+        viewBox="0 0 448 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+          fill="currentColor"
+          style={Object {}}
+        />
+      </svg>
+    </span>
+  </button>
+  <p />
+</section>
+`;
+
+exports[`UI display should display Menu component 1`] = `
+<nav
+  aria-label="Go to main navigation"
+  className="sc-pFZIQ grtKSH"
+>
+  <svg
+    aria-hidden="true"
+    className="svg-inline--fa fa-bars fa-w-14 fa-2x "
+    data-icon="bars"
+    data-prefix="fas"
+    focusable="false"
+    onClick={[Function]}
+    role="img"
+    style={Object {}}
+    viewBox="0 0 448 512"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+      fill="currentColor"
+      style={Object {}}
+    />
+  </svg>
+</nav>
+`;
+
+exports[`UI display should display Topics page 1`] = `
+<section
+  className="topics"
+>
+  <div
+    className="sc-kEjbxe fTvMMy"
+  >
+    <h3>
+      These topics need revision now
+    </h3>
+  </div>
+  <div
+    className="sc-kEjbxe kakecU"
+  >
+    <h3>
+      These topics will need revision this week
+    </h3>
+  </div>
+  <div
+    className="sc-kEjbxe hSTwwm"
+  >
+    <h3>
+      These topics don't need revising for now
+    </h3>
+  </div>
+  <button
+    aria-hidden="false"
+    className="sc-dlfnbm dMjXtw"
+    onClick={[Function]}
+    type="submit"
+  >
+    <span>
+      Add new topic 
+      <svg
+        aria-hidden="true"
+        className="svg-inline--fa fa-plus fa-w-14 "
+        data-icon="plus"
+        data-prefix="fas"
+        focusable="false"
+        role="img"
+        style={Object {}}
+        viewBox="0 0 448 512"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+          fill="currentColor"
+          style={Object {}}
+        />
+      </svg>
+    </span>
+  </button>
+</section>
+`;
+
+exports[`UI display should display single card 1`] = `
+<div
+  className="sc-hKgILt hCcOhI"
+>
+  <div>
+    <p>
+      Question
+    </p>
+    <div
+      className="sc-eCssSg igIRMD"
+      onClick={[Function]}
+    >
+      <h3>
+        Example question
+      </h3>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`UI display should display single topic 1`] = `
+<div
+  className="sc-iqHYGH iQpxDP"
+>
+  <h4>
+    Example name
+  </h4>
+  <p>
+    Example description
+  </p>
+</div>
+`;

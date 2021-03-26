@@ -16,13 +16,17 @@ function listen() {
 }
 
 function connect() {
-  mongoose.connect(process.env.MONGO_URL, { keepAlive: 1, useNewUrlParser: true });
+  mongoose.connect(process.env.MONGO_URL, {
+    keepAlive: 1,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+  });
   return mongoose.connection;
 }
 
 const connection = connect();
-
-// app.use(express.static(`${__dirname}/public`));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
@@ -36,6 +40,7 @@ app.use((request, response, next) => {
   next(createError(404));
 });
 
+// eslint-disable-next-line no-unused-vars
 app.use((error, request, response, next) => response.status(500).send(error));
 
 module.exports = {

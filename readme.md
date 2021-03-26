@@ -19,7 +19,7 @@
 1. Follow the installation steps above
 1. Make new branch off `master`
 1. Set the `NODE_ENV` variable in your `.env` file equal to `development`
-1. Start the server: `node server.js`
+1. Start the server: `npm start`
 1. In another terminal enter the client directory: `cd client`
 1. Install dependencies: `npm i`
 1. Start the client: `npm start`

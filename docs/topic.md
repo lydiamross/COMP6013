@@ -158,7 +158,7 @@ Content-Type: application/json; charset=utf-8
 
 
 ### PATCH /topics/
-This route updates topcis according to the model sent as JSON in the request body, with a 200 response, the topic id is required in the body.
+This route updates topics according to the model sent as JSON in the request body, with a 200 response, the topic id is required in the body.
 
 #### Example request:
 

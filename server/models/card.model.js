@@ -1,15 +1,6 @@
 const moment = require('moment');
 const mongoose = require('mongoose');
 
-const CARD_TYPES = [
-  'true-false',
-  'choice',
-  'fill-in',
-  'long-fill-in',
-  'numeric',
-  'simple'
-];
-
 const STATUS_TYPES = [
   'confident',
   'neutral',
@@ -19,7 +10,7 @@ const STATUS_TYPES = [
 const cardSchema = mongoose.Schema({
   createdDate: { type: mongoose.Schema.Types.Date, default: Date.now },
   updatedDate: mongoose.Schema.Types.Date,
-  type: { type: mongoose.Schema.Types.String, enum: CARD_TYPES, default: 'simple' },
+  type: { type: mongoose.Schema.Types.String, default: 'simple' },
   topicId: { type: mongoose.Schema.Types.ObjectId, ref: 'Topic' },
   question: { type: mongoose.Schema.Types.String, required: true },
   answer: { type: mongoose.Schema.Types.String, required: true },

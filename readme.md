@@ -1,4 +1,4 @@
-# Learnr
+# Flashcards
 
 ## Requirements
 
@@ -8,10 +8,10 @@
 
 ## Installation
 
-1. Clone the repository: `git clone git@github.com:lydiamross/COMP6013.git`
-1. Enter the directory: `cd COMP6013`
+1. Clone the repository: `git clone git@github.com:lydiamross/flashcards.git`
+1. Enter the directory: `cd flashcards`
 1. Install dependencies: `npm i`
-1. Create a `.env` file by duplicating the `.env.example` and amending as necessary, including adding your `MONGO_URL`
+1. Create a `.env` file by duplicating the `.env.example` and amending as necessary
 1. Start the server: `node server.js`
 
 ## Development
@@ -28,7 +28,7 @@
 ## Deployment
 
 1. When your changes are ready to be deployed, run `npm run build` in the client directory
-1. Squash and merge into master branch (this will automatically update heroku)
+1. Squash and merge into master branch
 
 ## REST API Documentation
 

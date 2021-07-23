@@ -4,8 +4,7 @@ import { About } from '../components/About';
 import { Card } from '../components/Card';
 import { Cards } from '../components/Cards';
 import { Menu } from '../components/Menu';
-import { Topic } from '../components/Topics';
-import { Topics } from '../components/Topics';
+import { Topic, Topics } from '../components/Topics';
 
 describe('UI snapshots', () => {
   it('should display single card', () => {
